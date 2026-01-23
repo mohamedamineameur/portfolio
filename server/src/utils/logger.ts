@@ -1,0 +1,19 @@
+const isDevelopment = process.env.NODE_ENV === "development";
+
+export const logger = {
+  info: (message: string, ...args: unknown[]): void => {
+    if (isDevelopment) {
+      console.log(`[INFO] ${message}`, ...args);
+    }
+  },
+
+  error: (message: string, ...args: unknown[]): void => {
+    console.error(`[ERROR] ${message}`, ...args);
+  },
+
+  warn: (message: string, ...args: unknown[]): void => {
+    if (isDevelopment) {
+      console.warn(`[WARN] ${message}`, ...args);
+    }
+  },
+};
