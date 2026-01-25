@@ -7,11 +7,14 @@ import { Textarea } from "../../components/ui/Textarea";
 import { Button } from "../../components/ui/Button";
 import { contactService } from "../../services/contact.service";
 import { useUI } from "../../contexts/UIContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { Send, CheckCircle } from "lucide-react";
+import { extractErrorMessage } from "../../utils/errorHandler";
 
 export function Contact() {
   const { setSuccess, setError } = useUI();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,19 +28,19 @@ export function Contact() {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Le nom est requis";
+      newErrors.name = t("contact.nameRequired");
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "L'email est requis";
+      newErrors.email = t("contact.emailRequired");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email invalide";
+      newErrors.email = t("contact.emailInvalid");
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = "Le message est requis";
+      newErrors.message = t("contact.messageRequired");
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Le message doit contenir au moins 10 caractères";
+      newErrors.message = t("contact.messageMinLength");
     }
 
     setErrors(newErrors);
@@ -53,11 +56,12 @@ export function Contact() {
       setIsSubmitting(true);
       await contactService.create(formData);
       setIsSuccess(true);
-      setSuccess("Message envoyé avec succès !");
+      setSuccess(t("contact.success"));
       setFormData({ name: "", email: "", message: "" });
       setTimeout(() => setIsSuccess(false), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de l'envoi du message");
+      const errorMessage = extractErrorMessage(err);
+      setError(errorMessage || t("contact.error"));
     } finally {
       setIsSubmitting(false);
     }
@@ -65,8 +69,8 @@ export function Contact() {
 
   return (
     <PageWrapper>
-      <SectionTitle subtitle="N'hésitez pas à me contacter pour discuter de vos projets">
-        Contactez-moi
+      <SectionTitle subtitle={t("contact.subtitle")}>
+        {t("contact.title")}
       </SectionTitle>
 
       <div className="max-w-2xl mx-auto">
@@ -79,44 +83,44 @@ export function Contact() {
               <div className="text-center py-8">
                 <CheckCircle className="mx-auto mb-4 text-green-500" size={48} />
                 <h3 className="text-xl font-semibold text-text-primary mb-2">
-                  Message envoyé !
+                  {t("contact.successTitle")}
                 </h3>
                 <p className="text-text-secondary">
-                  Je vous répondrai dans les plus brefs délais.
+                  {t("contact.successDescription")}
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <Input
-                  label="Nom"
+                  label={t("contact.name")}
                   type="text"
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
                   error={errors.name}
-                  placeholder="Votre nom"
+                  placeholder={t("contact.namePlaceholder")}
                 />
 
                 <Input
-                  label="Email"
+                  label={t("contact.email")}
                   type="email"
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
                   error={errors.email}
-                  placeholder="votre@email.com"
+                  placeholder={t("contact.emailPlaceholder")}
                 />
 
                 <Textarea
-                  label="Message"
+                  label={t("contact.message")}
                   value={formData.message}
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
                   }
                   error={errors.message}
-                  placeholder="Votre message..."
+                  placeholder={t("contact.messagePlaceholder")}
                 />
 
                 <Button
@@ -127,11 +131,11 @@ export function Contact() {
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
-                    "Envoi en cours..."
+                    t("contact.sending")
                   ) : (
                     <>
                       <Send size={20} className="mr-2" />
-                      Envoyer le message
+                      {t("contact.send")}
                     </>
                   )}
                 </Button>

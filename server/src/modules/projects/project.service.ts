@@ -1,6 +1,19 @@
 import { Project } from "../../database/models/Project.model.js";
 import { Technology } from "../../database/models/Technology.model.js";
 import type { WhereOptions } from "sequelize";
+import { getAbsoluteImageUrl } from "../../utils/imageUrl.js";
+
+/**
+ * Transforme les URLs d'images d'un projet en URLs absolues
+ * Modifie l'instance en place et retourne l'instance modifiée
+ */
+function transformProjectImageUrl(project: Project): Project {
+  const absoluteUrl = getAbsoluteImageUrl(project.imageUrl);
+  // Modifier directement la propriété de l'instance
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (project as any).imageUrl = absoluteUrl;
+  return project;
+}
 
 export const projectService = {
   async findAll(published?: boolean): Promise<Project[]> {
@@ -8,27 +21,36 @@ export const projectService = {
     if (published !== undefined) {
       where.published = published;
     }
-    return Project.findAll({
+    const projects = await Project.findAll({
       where,
       include: [Technology],
       order: [["createdAt", "DESC"]],
     });
+    // Transformer les URLs d'images en URLs absolues
+    return projects.map(transformProjectImageUrl);
   },
 
-  async findById(id: number): Promise<Project | null> {
-    return Project.findByPk(id, {
+  async findById(id: string): Promise<Project | null> {
+    const project = await Project.findByPk(id, {
       include: [Technology],
     });
+    if (!project) {
+      return null;
+    }
+    // Transformer l'URL d'image en URL absolue
+    return transformProjectImageUrl(project);
   },
 
   async create(data: {
-    title: string;
-    description: string;
+    titleFr: string;
+    titleEn: string;
+    descriptionFr: string;
+    descriptionEn: string;
     url?: string | null;
     githubUrl?: string | null;
     imageUrl?: string | null;
     published: boolean;
-    technologyIds?: number[];
+    technologyIds?: string[];
   }): Promise<Project> {
     const { technologyIds, ...projectData } = data;
     const project = await Project.create(projectData);
@@ -40,19 +62,22 @@ export const projectService = {
       await project.setTechnologies(technologies);
     }
 
-    return project.reload({ include: [Technology] });
+    const reloadedProject = await project.reload({ include: [Technology] });
+    return transformProjectImageUrl(reloadedProject);
   },
 
   async update(
-    id: number,
+    id: string,
     data: {
-      title?: string;
-      description?: string;
+      titleFr?: string;
+      titleEn?: string;
+      descriptionFr?: string;
+      descriptionEn?: string;
       url?: string | null;
       githubUrl?: string | null;
       imageUrl?: string | null;
       published?: boolean;
-      technologyIds?: number[];
+      technologyIds?: string[];
     }
   ): Promise<Project> {
     const project = await Project.findByPk(id);
@@ -70,7 +95,8 @@ export const projectService = {
       await project.setTechnologies(technologies);
     }
 
-    return project.reload({ include: [Technology] });
+    const reloadedProject = await project.reload({ include: [Technology] });
+    return transformProjectImageUrl(reloadedProject);
   },
 
   async delete(id: number): Promise<void> {

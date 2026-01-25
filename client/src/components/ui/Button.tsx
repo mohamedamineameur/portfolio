@@ -5,6 +5,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   children: ReactNode;
+  as?: "button" | "span" | "div";
 }
 
 export function Button({
@@ -12,6 +13,7 @@ export function Button({
   size = "md",
   className,
   children,
+  as = "button",
   ...props
 }: ButtonProps) {
   const baseStyles = "min-touch-target font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background";
@@ -29,12 +31,14 @@ export function Button({
     lg: "px-6 py-3 text-lg",
   };
 
+  const Component = as;
+
   return (
-    <button
+    <Component
       className={cn(baseStyles, variants[variant], sizes[size], className)}
-      {...props}
+      {...(as === "button" ? props : {})}
     >
       {children}
-    </button>
+    </Component>
   );
 }

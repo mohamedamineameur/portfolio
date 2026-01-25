@@ -2,19 +2,22 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 import { Button } from "../ui/Button";
+import { LanguageToggle } from "../common/LanguageToggle";
 import { cn } from "../../utils/cn";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
 
   const navItems = [
-    { path: "/", label: "Accueil" },
-    { path: "/projects", label: "Projets" },
-    { path: "/about", label: "À propos" },
-    { path: "/contact", label: "Contact" },
+    { path: "/", label: t("home") },
+    { path: "/projects", label: t("projects") },
+    { path: "/about", label: t("about") },
+    { path: "/contact", label: t("contact") },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -32,7 +35,8 @@ export function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="text-2xl font-bold text-primary">
-            Portfolio
+            Amine Ameur
+            <p className="text-sm text-text-secondary" style={{ paddingLeft: "8px" }}>Full-Stack Developer</p>
           </Link>
 
           {/* Desktop Navigation */}
@@ -51,20 +55,27 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <LanguageToggle />
             {user ? (
               <>
                 {user.role === "admin" && (
                   <Link to="/admin">
                     <Button variant="ghost" size="sm">
-                      Admin
+                      {t("admin")}
                     </Button>
                   </Link>
                 )}
                 <Button variant="outline" size="sm" onClick={handleLogout}>
-                  Déconnexion
+                  {t("logout")}
                 </Button>
               </>
-            ) : null}
+            ) : (
+              <Link to="/login">
+                <Button variant="outline" size="sm">
+                  {t("login")}
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -95,7 +106,10 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            {user && (
+            <div className="pt-2 border-t border-surface/50">
+              <LanguageToggle />
+            </div>
+            {user ? (
               <div className="pt-2 border-t border-surface/50 space-y-2">
                 {user.role === "admin" && (
                   <Link
@@ -103,15 +117,25 @@ export function Header() {
                     className="block py-2 px-4 rounded-lg text-sm font-medium text-text-primary hover:bg-surface min-touch-target"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Admin
+                    {t("admin")}
                   </Link>
                 )}
                 <button
                   onClick={handleLogout}
                   className="w-full text-left py-2 px-4 rounded-lg text-sm font-medium text-text-primary hover:bg-surface min-touch-target"
                 >
-                  Déconnexion
+                  {t("logout")}
                 </button>
+              </div>
+            ) : (
+              <div className="pt-2 border-t border-surface/50">
+                <Link
+                  to="/login"
+                  className="block py-2 px-4 rounded-lg text-sm font-medium text-text-primary hover:bg-surface min-touch-target"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t("login")}
+                </Link>
               </div>
             )}
           </div>

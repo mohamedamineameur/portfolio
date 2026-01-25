@@ -7,28 +7,63 @@ import { Loader } from "../../components/ui/Loader";
 import { ErrorState } from "../../components/common/ErrorState";
 import { EmptyState } from "../../components/common/EmptyState";
 import { useProjects } from "../../hooks/useProjects";
+import { useProfile } from "../../hooks/useProfile";
+import { useLanguage } from "../../contexts/LanguageContext";
 import { ExternalLink, Github } from "lucide-react";
 import { motion } from "framer-motion";
+import type { Project } from "../../types/api";
 
 export function Home() {
   const { projects, isLoading, error } = useProjects(true);
+  const { profile } = useProfile();
+  const { language, t } = useLanguage();
+
+  const getProjectTitle = (project: Project) => {
+    return language === "fr" ? project.titleFr : project.titleEn;
+  };
+
+  const getProjectDescription = (project: Project) => {
+    return language === "fr" ? project.descriptionFr : project.descriptionEn;
+  };
 
   return (
     <PageWrapper>
       <section className="mb-16">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-text-primary mb-4">
-            Développeur Full Stack
-          </h1>
-          <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-            Passionné par le développement web moderne et les technologies innovantes
-          </p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center gap-6"
+          >
+            {profile?.photo?.url && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                <img
+                  src={profile.photo.url}
+                  alt={profile.prenom && profile.nom ? `${profile.prenom} ${profile.nom}` : "Profile"}
+                  className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-primary shadow-lg"
+                />
+              </motion.div>
+            )}
+            <div>
+              <h1 className="text-4xl md:text-6xl font-bold text-text-primary mb-4">
+                {t("home.title")}
+              </h1>
+              <p className="text-xl text-text-secondary max-w-2xl mx-auto">
+                {t("home.subtitle")}
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       <section>
-        <SectionTitle subtitle="Découvrez mes réalisations">
-          Projets récents
+        <SectionTitle subtitle={t("home.recentProjects")}>
+          {t("home.recentProjects")}
         </SectionTitle>
 
         {isLoading && <Loader />}
@@ -56,15 +91,15 @@ export function Home() {
                   {project.imageUrl && (
                     <img
                       src={project.imageUrl}
-                      alt={project.title}
+                      alt={getProjectTitle(project)}
                       className="w-full h-48 object-cover rounded-lg mb-4"
                     />
                   )}
                   <h3 className="text-xl font-semibold text-text-primary mb-2">
-                    {project.title}
+                    {getProjectTitle(project)}
                   </h3>
                   <p className="text-text-secondary text-sm mb-4 flex-1 line-clamp-3">
-                    {project.description}
+                    {getProjectDescription(project)}
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.Technologies?.slice(0, 3).map((tech) => (
@@ -112,7 +147,7 @@ export function Home() {
           <div className="text-center mt-8">
             <Link to="/projects">
               <button className="min-touch-target px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
-                Voir tous les projets
+                {t("home.viewAllProjects")}
               </button>
             </Link>
           </div>

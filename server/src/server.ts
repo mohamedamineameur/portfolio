@@ -7,8 +7,9 @@ import "./database/models/index.js";
 
 async function startServer(): Promise<void> {
   try {
-    // Sync database
-    await sequelize.sync({ alter: env.NODE_ENV === "development" });
+    // Sync database (without alter to avoid SQLite foreign key constraint issues)
+    // Use migrate script for schema changes
+    await sequelize.sync({ alter: false });
     logger.info("Database synced");
 
     // Start server

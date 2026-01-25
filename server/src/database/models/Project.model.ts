@@ -11,9 +11,11 @@ export class Project extends Model<
   InferAttributes<Project>,
   InferCreationAttributes<Project>
 > {
-  declare id: CreationOptional<number>;
-  declare title: string;
-  declare description: string;
+  declare id: CreationOptional<string>;
+  declare titleFr: string;
+  declare titleEn: string;
+  declare descriptionFr: string;
+  declare descriptionEn: string;
   declare url: string | null;
   declare githubUrl: string | null;
   declare imageUrl: string | null;
@@ -33,15 +35,23 @@ export class Project extends Model<
 Project.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
     },
-    title: {
+    titleFr: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
+    titleEn: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    descriptionFr: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    descriptionEn: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
@@ -49,14 +59,36 @@ Project.init(
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isUrl: true,
+        isValidUrl(value: string | null): void {
+          if (value === null || value === "") {
+            return; // null et chaîne vide sont autorisés
+          }
+          // Accepter les URLs http/https (avec ou sans chemin)
+          if (
+            !value.startsWith("http://") &&
+            !value.startsWith("https://")
+          ) {
+            throw new Error("URL must start with http:// or https://");
+          }
+        },
       },
     },
     githubUrl: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isUrl: true,
+        isValidUrl(value: string | null): void {
+          if (value === null || value === "") {
+            return; // null et chaîne vide sont autorisés
+          }
+          // Accepter les URLs http/https (avec ou sans chemin)
+          if (
+            !value.startsWith("http://") &&
+            !value.startsWith("https://")
+          ) {
+            throw new Error("URL must start with http:// or https://");
+          }
+        },
       },
     },
     imageUrl: {

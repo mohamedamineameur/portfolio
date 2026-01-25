@@ -1,5 +1,7 @@
 import { Project } from "./Project.model.js";
 import { Technology } from "./Technology.model.js";
+import { Profile } from "./Profile.model.js";
+import { Photo } from "./Photo.model.js";
 
 /**
  * Initialize all model associations.
@@ -18,5 +20,16 @@ export function initializeAssociations(): void {
     through: "ProjectTechnologies",
     foreignKey: "technologyId",
     otherKey: "projectId",
+  });
+
+  // One-to-One relationship between Profile and Photo
+  Profile.belongsTo(Photo, {
+    foreignKey: "photoId",
+    as: "photo",
+  });
+
+  Photo.hasOne(Profile, {
+    foreignKey: "photoId",
+    as: "profile",
   });
 }

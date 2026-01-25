@@ -4,10 +4,10 @@ import { env } from "../config/env.js";
 import { Request } from "express";
 
 const storage = multer.diskStorage({
-  destination: (req: Request, file: Express.Multer.File, cb) => {
+  destination: (_req: Request, _file: Express.Multer.File, cb) => {
     cb(null, env.UPLOAD_DIR);
   },
-  filename: (req: Request, file: Express.Multer.File, cb) => {
+  filename: (_req: Request, file: Express.Multer.File, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const ext = path.extname(file.originalname);
     const name = path.basename(file.originalname, ext);
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (
-  req: Request,
+  _req: Request,
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ): void => {

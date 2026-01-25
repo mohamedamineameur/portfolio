@@ -1,5 +1,5 @@
 import { Contact } from "../../database/models/Contact.model.js";
-import { mailer } from "../../config/mailer.js";
+import { mailer, canSendEmail } from "../../config/mailer.js";
 import { mailTemplates } from "../../utils/mailTemplates.js";
 import { env } from "../../config/env.js";
 import { logger } from "../../utils/logger.js";
@@ -11,7 +11,7 @@ export const contactService = {
     });
   },
 
-  async findById(id: number): Promise<Contact | null> {
+  async findById(id: string): Promise<Contact | null> {
     return Contact.findByPk(id);
   },
 
@@ -22,8 +22,8 @@ export const contactService = {
   }): Promise<Contact> {
     const contact = await Contact.create(data);
 
-    // Send email notification (non-blocking)
-    if (env.EMAIL_FROM && env.SMTP_HOST) {
+    // Send email notification (non-blocking) – Gmail OAuth2 or SMTP
+    if (canSendEmail()) {
       try {
         const template = mailTemplates.contactForm(data);
         await mailer.sendMail({

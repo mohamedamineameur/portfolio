@@ -10,6 +10,7 @@
     "start": "node dist/server.js",
     "migrate": "tsx src/database/migrate.ts",
     "migrate:force": "NODE_ENV=development tsx -e \"import('./src/database/sequelize.js').then(async ({sequelize}) => { await import('./src/database/models/index.js'); await sequelize.sync({force: true}); await sequelize.close(); })\"",
+    "seed": "NODE_ENV=development tsx src/database/seed.ts",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
     "test:coverage": "NODE_ENV=test jest --coverage"

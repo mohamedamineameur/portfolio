@@ -19,17 +19,17 @@ export const contactService = {
     return response.data;
   },
 
-  async findById(id: number): Promise<Contact> {
+  async findById(id: string): Promise<Contact> {
     const response = await apiClient.get<Contact>(`/api/contacts/${id}`);
     return response.data;
   },
 
-  async markAsRead(id: number): Promise<Contact> {
+  async markAsRead(id: string): Promise<Contact> {
     const response = await apiClient.patch<Contact>(`/api/contacts/${id}/read`);
     return response.data;
   },
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await apiClient.delete(`/api/contacts/${id}`);
   },
 };

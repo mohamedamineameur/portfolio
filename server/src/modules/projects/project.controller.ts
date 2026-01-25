@@ -27,7 +27,7 @@ export const projectController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as unknown as number;
+      const id = req.params.id as string;
       const project = await projectService.findById(id);
       if (!project) {
         res.status(404).json({ error: "Project not found" });
@@ -58,7 +58,7 @@ export const projectController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as unknown as number;
+      const id = req.params.id as string;
       const project = await projectService.update(id, req.body);
       res.json(project);
     } catch (error) {
@@ -72,7 +72,7 @@ export const projectController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as unknown as number;
+      const id = req.params.id as string;
       await projectService.delete(id);
       res.status(204).send();
     } catch (error) {

@@ -11,7 +11,7 @@ export class Technology extends Model<
   InferAttributes<Technology>,
   InferCreationAttributes<Technology>
 > {
-  declare id: CreationOptional<number>;
+  declare id: CreationOptional<string>;
   declare name: string;
   declare icon: string | null;
   declare category: string | null;
@@ -30,9 +30,9 @@ export class Technology extends Model<
 Technology.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     name: {
       type: DataTypes.STRING,

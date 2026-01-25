@@ -21,7 +21,7 @@ export const technologyController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as unknown as number;
+      const id = req.params.id as string;
       const technology = await technologyService.findById(id);
       if (!technology) {
         res.status(404).json({ error: "Technology not found" });
@@ -52,7 +52,7 @@ export const technologyController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as unknown as number;
+      const id = req.params.id as string;
       const technology = await technologyService.update(id, req.body);
       res.json(technology);
     } catch (error) {
@@ -66,7 +66,7 @@ export const technologyController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as unknown as number;
+      const id = req.params.id as string;
       await technologyService.delete(id);
       res.status(204).send();
     } catch (error) {

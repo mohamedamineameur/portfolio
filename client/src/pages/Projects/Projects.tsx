@@ -8,18 +8,29 @@ import { Loader } from "../../components/ui/Loader";
 import { ErrorState } from "../../components/common/ErrorState";
 import { EmptyState } from "../../components/common/EmptyState";
 import { useProjects } from "../../hooks/useProjects";
+import { useLanguage } from "../../contexts/LanguageContext";
 import { ExternalLink, Github } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "../../components/ui/Button";
+import type { Project } from "../../types/api";
 
 export function Projects() {
   const [filter, setFilter] = useState<boolean | undefined>(undefined);
   const { projects, isLoading, error } = useProjects(filter);
+  const { language, t } = useLanguage();
+
+  const getProjectTitle = (project: Project) => {
+    return language === "fr" ? project.titleFr : project.titleEn;
+  };
+
+  const getProjectDescription = (project: Project) => {
+    return language === "fr" ? project.descriptionFr : project.descriptionEn;
+  };
 
   return (
     <PageWrapper>
-      <SectionTitle subtitle="Explorez tous mes projets et réalisations">
-        Mes Projets
+      <SectionTitle subtitle={t("projects.subtitle")}>
+        {t("projects.title")}
       </SectionTitle>
 
       {/* Filters */}
@@ -29,21 +40,21 @@ export function Projects() {
           size="sm"
           onClick={() => setFilter(undefined)}
         >
-          Tous
+          {t("projects.all")}
         </Button>
         <Button
           variant={filter === true ? "primary" : "outline"}
           size="sm"
           onClick={() => setFilter(true)}
         >
-          Publiés
+          {t("projects.published")}
         </Button>
         <Button
           variant={filter === false ? "primary" : "outline"}
           size="sm"
           onClick={() => setFilter(false)}
         >
-          Brouillons
+          {t("projects.drafts")}
         </Button>
       </div>
 
@@ -51,8 +62,8 @@ export function Projects() {
       {error && <ErrorState message={error} />}
       {!isLoading && !error && projects.length === 0 && (
         <EmptyState
-          title="Aucun projet trouvé"
-          description="Aucun projet ne correspond à vos critères"
+          title={t("projects.notFound")}
+          description={t("projects.notFoundDescription")}
         />
       )}
 
@@ -72,22 +83,22 @@ export function Projects() {
                 {project.imageUrl && (
                   <img
                     src={project.imageUrl}
-                    alt={project.title}
+                    alt={getProjectTitle(project)}
                     className="w-full h-48 object-cover rounded-lg mb-4"
                   />
                 )}
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-xl font-semibold text-text-primary">
-                    {project.title}
+                    {getProjectTitle(project)}
                   </h3>
                   {!project.published && (
                     <Badge variant="default" className="ml-2">
-                      Brouillon
+                      {t("projects.draft")}
                     </Badge>
                   )}
                 </div>
                 <p className="text-text-secondary text-sm mb-4 flex-1 line-clamp-3">
-                  {project.description}
+                  {getProjectDescription(project)}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.Technologies?.map((tech) => (

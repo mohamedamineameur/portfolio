@@ -6,6 +6,7 @@ import { Badge } from "../../components/ui/Badge";
 import { Loader } from "../../components/ui/Loader";
 import { ErrorState } from "../../components/common/ErrorState";
 import { projectService } from "../../services/project.service";
+import { useLanguage } from "../../contexts/LanguageContext";
 import type { Project } from "../../types/api";
 import { ExternalLink, Github, ArrowLeft } from "lucide-react";
 import { Button } from "../../components/ui/Button";
@@ -17,6 +18,15 @@ export function ProjectDetails() {
   const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language, t } = useLanguage();
+
+  const getProjectTitle = (project: Project) => {
+    return language === "fr" ? project.titleFr : project.titleEn;
+  };
+
+  const getProjectDescription = (project: Project) => {
+    return language === "fr" ? project.descriptionFr : project.descriptionEn;
+  };
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -24,10 +34,10 @@ export function ProjectDetails() {
       try {
         setIsLoading(true);
         setError(null);
-        const data = await projectService.findById(Number(id));
+        const data = await projectService.findById(id);
         setProject(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Projet non trouvé");
+        setError(err instanceof Error ? err.message : t("projects.notFound"));
       } finally {
         setIsLoading(false);
       }
@@ -48,7 +58,7 @@ export function ProjectDetails() {
     return (
       <PageWrapper>
         <ErrorState
-          message={error || "Projet non trouvé"}
+          message={error || t("projects.notFound")}
           onRetry={() => navigate("/projects")}
         />
       </PageWrapper>
@@ -65,14 +75,14 @@ export function ProjectDetails() {
         <Link to="/projects">
           <Button variant="ghost" size="sm" className="mb-6">
             <ArrowLeft size={16} className="mr-2" />
-            Retour aux projets
+            {t("projects.back")}
           </Button>
         </Link>
 
         {project.imageUrl && (
           <img
             src={project.imageUrl}
-            alt={project.title}
+            alt={getProjectTitle(project)}
             className="w-full h-64 md:h-96 object-cover rounded-xl mb-8"
           />
         )}
@@ -80,10 +90,10 @@ export function ProjectDetails() {
         <Card className="mb-6">
           <div className="flex items-start justify-between mb-4">
             <h1 className="text-3xl md:text-4xl font-bold text-text-primary">
-              {project.title}
+              {getProjectTitle(project)}
             </h1>
             {!project.published && (
-              <Badge variant="default">Brouillon</Badge>
+              <Badge variant="default">{t("projects.draft")}</Badge>
             )}
           </div>
 
@@ -96,7 +106,7 @@ export function ProjectDetails() {
           </div>
 
           <p className="text-text-secondary text-lg leading-relaxed mb-6 whitespace-pre-line">
-            {project.description}
+            {getProjectDescription(project)}
           </p>
 
           <div className="flex flex-wrap gap-4">
@@ -108,7 +118,7 @@ export function ProjectDetails() {
                 className="min-touch-target flex items-center gap-2 text-primary hover:text-accent transition-colors"
               >
                 <ExternalLink size={20} />
-                <span>Voir le projet</span>
+                <span>{t("projects.viewProject")}</span>
               </a>
             )}
             {project.githubUrl && (
@@ -119,7 +129,7 @@ export function ProjectDetails() {
                 className="min-touch-target flex items-center gap-2 text-primary hover:text-accent transition-colors"
               >
                 <Github size={20} />
-                <span>Code source</span>
+                <span>{t("projects.sourceCode")}</span>
               </a>
             )}
           </div>

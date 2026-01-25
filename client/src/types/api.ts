@@ -1,11 +1,11 @@
 export interface User {
-  id: number;
+  id: string;
   email: string;
   role?: string;
 }
 
 export interface Technology {
-  id: number;
+  id: string;
   name: string;
   icon: string | null;
   category: string | null;
@@ -14,9 +14,11 @@ export interface Technology {
 }
 
 export interface Project {
-  id: number;
-  title: string;
-  description: string;
+  id: string;
+  titleFr: string;
+  titleEn: string;
+  descriptionFr: string;
+  descriptionEn: string;
   url: string | null;
   githubUrl: string | null;
   imageUrl: string | null;
@@ -27,13 +29,34 @@ export interface Project {
 }
 
 export interface Contact {
-  id: number;
+  id: string;
   name: string;
   email: string;
   message: string;
   read: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Photo {
+  id: string;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Profile {
+  id: string;
+  nom: string;
+  prenom: string;
+  email: string;
+  tel: string | null;
+  linkedIn: string | null;
+  github: string | null;
+  photoId: string | null;
+  createdAt: string;
+  updatedAt: string;
+  photo?: Photo | null;
 }
 
 export interface AuthResponse {

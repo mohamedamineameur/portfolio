@@ -25,7 +25,7 @@ export const contactController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as unknown as number;
+      const id = req.params.id as string;
       const contact = await contactService.findById(id);
       if (!contact) {
         res.status(404).json({ error: "Contact not found" });
@@ -60,7 +60,7 @@ export const contactController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as unknown as number;
+      const id = req.params.id as string;
       const contact = await contactService.markAsRead(id);
       res.json(contact);
     } catch (error) {
@@ -74,7 +74,7 @@ export const contactController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as unknown as number;
+      const id = req.params.id as string;
       await contactService.delete(id);
       res.status(204).send();
     } catch (error) {

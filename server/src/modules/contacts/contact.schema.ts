@@ -10,6 +10,6 @@ export const createContactSchema = z
 
 export const contactParamsSchema = z
   .object({
-    id: z.string().regex(/^\d+$/).transform(Number),
+    id: z.string().uuid(),
   })
   .strict();

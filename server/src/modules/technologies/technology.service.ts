@@ -8,7 +8,7 @@ export const technologyService = {
     });
   },
 
-  async findById(id: number): Promise<Technology | null> {
+  async findById(id: string): Promise<Technology | null> {
     return Technology.findByPk(id);
   },
 
@@ -21,7 +21,7 @@ export const technologyService = {
   },
 
   async update(
-    id: number,
+    id: string,
     data: {
       name?: string;
       icon?: string | null;

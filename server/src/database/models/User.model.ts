@@ -11,7 +11,7 @@ export class User extends Model<
   InferAttributes<User>,
   InferCreationAttributes<User>
 > {
-  declare id: CreationOptional<number>;
+  declare id: CreationOptional<string>;
   declare email: string;
   declare password: string;
   declare role: CreationOptional<string>;
@@ -22,9 +22,9 @@ export class User extends Model<
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     email: {
       type: DataTypes.STRING,

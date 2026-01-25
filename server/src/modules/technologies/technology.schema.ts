@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const technologyParamsSchema = z
   .object({
-    id: z.string().regex(/^\d+$/).transform(Number),
+    id: z.string().uuid(),
   })
   .strict();
 

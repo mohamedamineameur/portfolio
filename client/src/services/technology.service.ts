@@ -7,7 +7,7 @@ export const technologyService = {
     return response.data;
   },
 
-  async findById(id: number): Promise<Technology> {
+  async findById(id: string): Promise<Technology> {
     const response = await apiClient.get<Technology>(`/api/technologies/${id}`);
     return response.data;
   },
@@ -22,7 +22,7 @@ export const technologyService = {
   },
 
   async update(
-    id: number,
+    id: string,
     data: {
       name?: string;
       icon?: string | null;
@@ -33,7 +33,7 @@ export const technologyService = {
     return response.data;
   },
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await apiClient.delete(`/api/technologies/${id}`);
   },
 };

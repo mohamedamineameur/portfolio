@@ -11,7 +11,7 @@ export class Contact extends Model<
   InferAttributes<Contact>,
   InferCreationAttributes<Contact>
 > {
-  declare id: CreationOptional<number>;
+  declare id: CreationOptional<string>;
   declare name: string;
   declare email: string;
   declare message: string;
@@ -23,9 +23,9 @@ export class Contact extends Model<
 Contact.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     name: {
       type: DataTypes.STRING,
