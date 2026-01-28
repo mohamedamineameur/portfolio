@@ -14,6 +14,7 @@ This server follows a production-grade architecture with:
 - Comprehensive error handling
 - Rate limiting
 - Email notifications
+  
 
 ## Setup
 
