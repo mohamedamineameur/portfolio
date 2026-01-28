@@ -7,6 +7,7 @@ import { Loader } from "../../components/ui/Loader";
 import { ErrorState } from "../../components/common/ErrorState";
 import { projectService } from "../../services/project.service";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { getImageUrl } from "../../utils/imageUrl";
 import type { Project } from "../../types/api";
 import { ExternalLink, Github, ArrowLeft } from "lucide-react";
 import { Button } from "../../components/ui/Button";
@@ -85,7 +86,7 @@ export function ProjectDetails() {
         {project.imageUrls?.length > 0 && (
           <>
             <Carousel
-              images={project.imageUrls}
+              images={project.imageUrls.map(getImageUrl)}
               alt={getProjectTitle(project)}
               className="w-full h-64 md:h-96 mb-8"
               imageClassName="rounded-xl"

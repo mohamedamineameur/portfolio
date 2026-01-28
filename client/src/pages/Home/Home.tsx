@@ -9,6 +9,7 @@ import { EmptyState } from "../../components/common/EmptyState";
 import { useProjects } from "../../hooks/useProjects";
 import { useProfile } from "../../hooks/useProfile";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { getImageUrl } from "../../utils/imageUrl";
 import { ExternalLink, Github } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Project } from "../../types/api";
@@ -43,7 +44,7 @@ export function Home() {
                 transition={{ delay: 0.2, duration: 0.5 }}
               >
                 <img
-                  src={profile.photo.url}
+                  src={getImageUrl(profile.photo.url)}
                   alt={profile.prenom && profile.nom ? `${profile.prenom} ${profile.nom}` : "Profile"}
                   className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-primary shadow-lg"
                 />
@@ -91,7 +92,7 @@ export function Home() {
                   {project.imageUrls?.length > 0 && (
                     <div className="w-full h-48 bg-surface/50 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                       <img
-                        src={project.imageUrls[0]}
+                        src={getImageUrl(project.imageUrls[0])}
                         alt={getProjectTitle(project)}
                         className="w-full h-full object-contain"
                       />

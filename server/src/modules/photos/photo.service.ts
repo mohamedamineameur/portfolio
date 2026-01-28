@@ -1,40 +1,22 @@
 import { Photo } from "../../database/models/Photo.model.js";
-import { getAbsoluteImageUrl } from "../../utils/imageUrl.js";
 
+/**
+ * Les URLs des photos sont stockées et renvoyées en relatif (/uploads/...).
+ * Le frontend ajoute la base URL (API) pour charger les images.
+ */
 export const photoService = {
   findAll: async (): Promise<Photo[]> => {
-    const photos = await Photo.findAll({
+    return Photo.findAll({
       order: [["createdAt", "DESC"]],
-    });
-    // Transformer les URLs en URLs absolues
-    return photos.map((photo) => {
-      const absoluteUrl = getAbsoluteImageUrl(photo.url);
-      return {
-        ...photo.toJSON(),
-        url: absoluteUrl,
-      } as Photo;
     });
   },
 
   findById: async (id: string): Promise<Photo | null> => {
-    const photo = await Photo.findByPk(id);
-    if (!photo) {
-      return null;
-    }
-    const absoluteUrl = getAbsoluteImageUrl(photo.url);
-    return {
-      ...photo.toJSON(),
-      url: absoluteUrl,
-    } as Photo;
+    return Photo.findByPk(id);
   },
 
   create: async (url: string): Promise<Photo> => {
-    const photo = await Photo.create({ url });
-    const absoluteUrl = getAbsoluteImageUrl(photo.url);
-    return {
-      ...photo.toJSON(),
-      url: absoluteUrl,
-    } as Photo;
+    return Photo.create({ url });
   },
 
   delete: async (id: string): Promise<void> => {

@@ -8,6 +8,7 @@ import { ErrorState } from "../../components/common/ErrorState";
 import { EmptyState } from "../../components/common/EmptyState";
 import { useProjects } from "../../hooks/useProjects";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { getImageUrl } from "../../utils/imageUrl";
 import { ExternalLink, Github } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "../../components/ui/Button";
@@ -82,7 +83,7 @@ export function Projects() {
                 {project.imageUrls?.length > 0 && (
                   <div className="w-full h-48 bg-surface/50 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                     <img
-                      src={project.imageUrls[0]}
+                      src={getImageUrl(project.imageUrls[0])}
                       alt={getProjectTitle(project)}
                       className="w-full h-full object-contain"
                     />

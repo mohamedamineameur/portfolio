@@ -7,6 +7,7 @@ import { ErrorState } from "../../components/common/ErrorState";
 import { EmptyState } from "../../components/common/EmptyState";
 import { useProfile } from "../../hooks/useProfile";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { getImageUrl } from "../../utils/imageUrl";
 import { motion } from "framer-motion";
 import { Code, Database, Globe, Smartphone, Mail, Phone, Linkedin, Github } from "lucide-react";
 
@@ -42,7 +43,7 @@ export function About() {
                 {profile.photo?.url && (
                   <div className="flex-shrink-0">
                     <img
-                      src={profile.photo.url}
+                      src={getImageUrl(profile.photo.url)}
                       alt={`${profile.prenom} ${profile.nom}`}
                       className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-2 border-primary"
                     />

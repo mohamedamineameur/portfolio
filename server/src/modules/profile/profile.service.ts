@@ -1,25 +1,12 @@
 import { Profile } from "../../database/models/Profile.model.js";
 import { Photo } from "../../database/models/Photo.model.js";
-import { getAbsoluteImageUrl } from "../../utils/imageUrl.js";
 
 type ProfileWithPhoto = Profile & { photo?: Photo };
-
-/**
- * Transforme l'URL de la photo du profil en URL absolue
- * Modifie l'instance en place et retourne l'instance modifiée
- */
-function transformProfilePhotoUrl(profile: ProfileWithPhoto): ProfileWithPhoto {
-  if (profile.photo?.url) {
-    const absoluteUrl = getAbsoluteImageUrl(profile.photo.url);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (profile.photo as any).url = absoluteUrl;
-  }
-  return profile;
-}
 
 export const profileService = {
   /**
    * Get the profile (singleton - only one profile exists)
+   * Les URLs des photos sont renvoyées en relatif (/uploads/...) pour que le frontend ajoute la base.
    */
   async findOne(): Promise<Profile | null> {
     const profile = await Profile.findOne({
@@ -30,11 +17,7 @@ export const profileService = {
         },
       ],
     });
-    if (!profile) {
-      return null;
-    }
-    // Transformer l'URL de la photo en URL absolue
-    return transformProfilePhotoUrl(profile);
+    return profile as ProfileWithPhoto | null;
   },
 
   /**
@@ -64,7 +47,7 @@ export const profileService = {
           },
         ],
       });
-      return transformProfilePhotoUrl(reloadedProfile);
+      return reloadedProfile as ProfileWithPhoto;
     } else {
       // Create new profile (only if none exists)
       profile = await Profile.create({
@@ -84,7 +67,7 @@ export const profileService = {
           },
         ],
       });
-      return transformProfilePhotoUrl(reloadedProfile);
+      return reloadedProfile as ProfileWithPhoto;
     }
   },
 };

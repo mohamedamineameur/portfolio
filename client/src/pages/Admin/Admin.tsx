@@ -20,6 +20,7 @@ import type { Project, Contact, Technology } from "../../types/api";
 import { Trash2, Eye, Plus, Edit } from "lucide-react";
 import { useUI } from "../../contexts/UIContext";
 import { extractErrorMessage } from "../../utils/errorHandler";
+import { getImageUrl } from "../../utils/imageUrl";
 
 export function Admin() {
   const { setSuccess, setError } = useUI();
@@ -540,7 +541,7 @@ export function Admin() {
                       {profile.photo?.url && (
                         <div className="flex-shrink-0">
                           <img
-                            src={profile.photo.url}
+                            src={getImageUrl(profile.photo.url)}
                             alt={`${profile.prenom} ${profile.nom}`}
                             className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-2 border-primary"
                           />
@@ -677,7 +678,7 @@ export function Admin() {
                 {projectForm.imageUrls.map((url, i) => (
                   <div key={i} className="relative">
                     <img
-                      src={url}
+                      src={getImageUrl(url)}
                       alt=""
                       className="w-16 h-16 object-cover rounded-lg border border-surface/50"
                     />
@@ -887,7 +888,7 @@ export function Admin() {
               <div className="flex gap-2 items-center">
                 {profileForm.photoId && (
                   <img
-                    src={profile?.photo?.url || ""}
+                    src={getImageUrl(profile?.photo?.url || "")}
                     alt="Selected photo"
                     className="w-16 h-16 rounded object-cover"
                   />

@@ -21,7 +21,7 @@ export const photoController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as string;
+      const id = req.params.id;
       const photo = await photoService.findById(id);
       if (!photo) {
         res.status(404).json({ error: "Photo not found" });
@@ -60,7 +60,7 @@ export const photoController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const id = req.params.id as string;
+      const id = req.params.id;
       await photoService.delete(id);
       res.status(204).send();
     } catch (error) {

@@ -4,6 +4,7 @@ import { Button } from "../ui/Button";
 import { photoService } from "../../services/photo.service.js";
 import { useUI } from "../../contexts/UIContext.js";
 import { useLanguage } from "../../contexts/LanguageContext.js";
+import { getImageUrl } from "../../utils/imageUrl.js";
 import type { Photo } from "../../types/api.js";
 import { PhotoUpload } from "./PhotoUpload.js";
 import { extractErrorMessage } from "../../utils/errorHandler.js";
@@ -104,7 +105,7 @@ export function PhotoSelector({
               }`}
             >
               <img
-                src={photo.url}
+                src={getImageUrl(photo.url)}
                 alt={`Photo ${photo.id}`}
                 className="w-full h-full object-cover"
               />

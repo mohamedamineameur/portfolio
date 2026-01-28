@@ -1,43 +1,28 @@
 import { Project } from "../../database/models/Project.model.js";
 import { Technology } from "../../database/models/Technology.model.js";
 import type { WhereOptions } from "sequelize";
-import { getAbsoluteImageUrls } from "../../utils/imageUrl.js";
 
 /**
- * Transforme les URLs d'images d'un projet en URLs absolues
- * Modifie l'instance en place et retourne l'instance modifiée
+ * Les URLs d'images des projets sont renvoyées en relatif (/uploads/...).
+ * Le frontend ajoute la base URL pour charger les images.
  */
-function transformProjectImageUrls(project: Project): Project {
-  const urls = getAbsoluteImageUrls(project.imageUrls as (string | null)[] | null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (project as any).imageUrls = urls;
-  return project;
-}
-
 export const projectService = {
   async findAll(published?: boolean): Promise<Project[]> {
     const where: WhereOptions<Project> = {};
     if (published !== undefined) {
       where.published = published;
     }
-    const projects = await Project.findAll({
+    return Project.findAll({
       where,
       include: [Technology],
       order: [["createdAt", "DESC"]],
     });
-    // Transformer les URLs d'images en URLs absolues
-    return projects.map(transformProjectImageUrls);
   },
 
   async findById(id: string): Promise<Project | null> {
-    const project = await Project.findByPk(id, {
+    return Project.findByPk(id, {
       include: [Technology],
     });
-    if (!project) {
-      return null;
-    }
-    // Transformer les URLs d'images en URLs absolues
-    return transformProjectImageUrls(project);
   },
 
   async create(data: {
@@ -64,8 +49,7 @@ export const projectService = {
       await project.setTechnologies(technologies);
     }
 
-    const reloadedProject = await project.reload({ include: [Technology] });
-    return transformProjectImageUrls(reloadedProject);
+    return project.reload({ include: [Technology] });
   },
 
   async update(
@@ -97,8 +81,7 @@ export const projectService = {
       await project.setTechnologies(technologies);
     }
 
-    const reloadedProject = await project.reload({ include: [Technology] });
-    return transformProjectImageUrls(reloadedProject);
+    return project.reload({ include: [Technology] });
   },
 
   async delete(id: string): Promise<void> {
