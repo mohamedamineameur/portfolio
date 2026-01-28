@@ -36,7 +36,7 @@ export const technologyService = {
     return technology;
   },
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     const technology = await Technology.findByPk(id);
     if (!technology) {
       throw new HttpError("Technology not found", 404);

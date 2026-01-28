@@ -8,7 +8,7 @@ export const createProjectSchema = z
     descriptionEn: z.string().min(10),
     url: z.string().url().optional().nullable(),
     githubUrl: z.string().url().optional().nullable(),
-    imageUrl: z.string().url().optional().nullable(),
+    imageUrls: z.array(z.string().min(1)).optional(),
     published: z.boolean(),
     technologyIds: z.array(z.string().uuid()).optional(),
   })
@@ -22,7 +22,7 @@ export const updateProjectSchema = z
     descriptionEn: z.string().min(10).optional(),
     url: z.string().url().optional().nullable(),
     githubUrl: z.string().url().optional().nullable(),
-    imageUrl: z.string().url().optional().nullable(),
+    imageUrls: z.array(z.string().min(1)).optional(),
     published: z.boolean().optional(),
     technologyIds: z.array(z.string().uuid()).optional(),
   })

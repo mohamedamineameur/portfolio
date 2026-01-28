@@ -31,14 +31,17 @@ export function Button({
     lg: "px-6 py-3 text-lg",
   };
 
-  const Component = as;
+  const sharedClass = cn(baseStyles, variants[variant], sizes[size], className);
 
-  return (
-    <Component
-      className={cn(baseStyles, variants[variant], sizes[size], className)}
-      {...(as === "button" ? props : {})}
-    >
-      {children}
-    </Component>
-  );
+  if (as === "button") {
+    return (
+      <button className={sharedClass} {...props}>
+        {children}
+      </button>
+    );
+  }
+  if (as === "span") {
+    return <span className={sharedClass}>{children}</span>;
+  }
+  return <div className={sharedClass}>{children}</div>;
 }

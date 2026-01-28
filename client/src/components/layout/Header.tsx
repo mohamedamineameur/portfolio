@@ -56,7 +56,7 @@ export function Header() {
               </Link>
             ))}
             <LanguageToggle />
-            {user ? (
+            {user && (
               <>
                 {user.role === "admin" && (
                   <Link to="/admin">
@@ -69,12 +69,6 @@ export function Header() {
                   {t("logout")}
                 </Button>
               </>
-            ) : (
-              <Link to="/login">
-                <Button variant="outline" size="sm">
-                  {t("login")}
-                </Button>
-              </Link>
             )}
           </div>
 
@@ -109,7 +103,7 @@ export function Header() {
             <div className="pt-2 border-t border-surface/50">
               <LanguageToggle />
             </div>
-            {user ? (
+            {user && (
               <div className="pt-2 border-t border-surface/50 space-y-2">
                 {user.role === "admin" && (
                   <Link
@@ -126,16 +120,6 @@ export function Header() {
                 >
                   {t("logout")}
                 </button>
-              </div>
-            ) : (
-              <div className="pt-2 border-t border-surface/50">
-                <Link
-                  to="/login"
-                  className="block py-2 px-4 rounded-lg text-sm font-medium text-text-primary hover:bg-surface min-touch-target"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t("login")}
-                </Link>
               </div>
             )}
           </div>

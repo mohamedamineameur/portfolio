@@ -20,7 +20,7 @@ export const projectService = {
     descriptionEn: string;
     url?: string | null;
     githubUrl?: string | null;
-    imageUrl?: string | null;
+    imageUrls?: string[];
     published: boolean;
     technologyIds?: string[];
   }): Promise<Project> {
@@ -37,7 +37,7 @@ export const projectService = {
       descriptionEn?: string;
       url?: string | null;
       githubUrl?: string | null;
-      imageUrl?: string | null;
+      imageUrls?: string[];
       published?: boolean;
       technologyIds?: string[];
     }

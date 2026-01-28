@@ -42,7 +42,7 @@ export const contactService = {
     return contact;
   },
 
-  async markAsRead(id: number): Promise<Contact> {
+  async markAsRead(id: string): Promise<Contact> {
     const contact = await Contact.findByPk(id);
     if (!contact) {
       throw new Error("Contact not found");
@@ -51,7 +51,7 @@ export const contactService = {
     return contact;
   },
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     const contact = await Contact.findByPk(id);
     if (!contact) {
       throw new Error("Contact not found");

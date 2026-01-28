@@ -32,8 +32,10 @@ describe("Projects", () => {
     it("should return all projects", async () => {
       const technology = await createTechnology({ name: "React" });
       await createProject({
-        title: "My Portfolio",
-        description: "A beautiful portfolio website",
+        titleFr: "Mon Portfolio",
+        titleEn: "My Portfolio",
+        descriptionFr: "Un beau site portfolio",
+        descriptionEn: "A beautiful portfolio website",
         published: true,
         technologyIds: [technology.id],
       });
@@ -42,19 +44,24 @@ describe("Projects", () => {
 
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0]).toHaveProperty("title", "My Portfolio");
+      expect(response.body[0]).toHaveProperty("titleFr", "Mon Portfolio");
+      expect(response.body[0]).toHaveProperty("titleEn", "My Portfolio");
       expect(response.body[0]).toHaveProperty("Technologies");
     });
 
     it("should filter by published status", async () => {
       await createProject({
-        title: "Published Project",
-        description: "This is published",
+        titleFr: "Projet publié",
+        titleEn: "Published Project",
+        descriptionFr: "Ceci est publié",
+        descriptionEn: "This is published",
         published: true,
       });
       await createProject({
-        title: "Draft Project",
-        description: "This is a draft",
+        titleFr: "Projet brouillon",
+        titleEn: "Draft Project",
+        descriptionFr: "Ceci est un brouillon",
+        descriptionEn: "This is a draft",
         published: false,
       });
 
@@ -74,21 +81,26 @@ describe("Projects", () => {
 
   describe("GET /api/projects/:id", () => {
     it("should return 404 for non-existent project", async () => {
-      await agent.get("/api/projects/999").expect(404);
+      await agent
+        .get("/api/projects/00000000-0000-0000-0000-000000000000")
+        .expect(404);
     });
 
     it("should return project by id", async () => {
       const technology = await createTechnology({ name: "Vue.js" });
       const project = await createProject({
-        title: "Vue App",
-        description: "A Vue.js application",
+        titleFr: "App Vue",
+        titleEn: "Vue App",
+        descriptionFr: "Une application Vue.js",
+        descriptionEn: "A Vue.js application",
         technologyIds: [technology.id],
       });
 
       const response = await agent.get(`/api/projects/${project.id}`).expect(200);
 
       expect(response.body).toHaveProperty("id", project.id);
-      expect(response.body).toHaveProperty("title", "Vue App");
+      expect(response.body).toHaveProperty("titleFr", "App Vue");
+      expect(response.body).toHaveProperty("titleEn", "Vue App");
       expect(response.body).toHaveProperty("Technologies");
     });
   });
@@ -99,22 +111,27 @@ describe("Projects", () => {
         .post("/api/projects")
         .set("Cookie", authCookie)
         .send({
-          title: "Test Project",
-          description: "This is a test project description",
+          titleFr: "Projet test",
+          titleEn: "Test Project",
+          descriptionFr: "Description de test du projet",
+          descriptionEn: "This is a test project description",
           url: "https://example.com",
           published: true,
         })
         .expect(201);
 
-      expect(response.body).toHaveProperty("title", "Test Project");
+      expect(response.body).toHaveProperty("titleFr", "Projet test");
+      expect(response.body).toHaveProperty("titleEn", "Test Project");
     });
 
     it("should require authentication", async () => {
       await agent
         .post("/api/projects")
         .send({
-          title: "Test Project",
-          description: "This is a test project description",
+          titleFr: "Projet test",
+          titleEn: "Test Project",
+          descriptionFr: "Description de test",
+          descriptionEn: "This is a test project description",
         })
         .expect(401);
     });

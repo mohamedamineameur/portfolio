@@ -6,6 +6,7 @@ import { About } from "../pages/About/About";
 import { Contact } from "../pages/Contact/Contact";
 import { Admin } from "../pages/Admin/Admin";
 import { Login } from "../pages/Login/Login";
+import { Error404 } from "../pages/Error404/Error404";
 
 export function Routes() {
   return (
@@ -17,6 +18,7 @@ export function Routes() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="*" element={<Error404 />} />
     </ReactRouterRoutes>
   );
 }

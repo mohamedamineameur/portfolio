@@ -8,9 +8,9 @@ export async function createProject(data?: {
   descriptionEn?: string;
   url?: string | null;
   githubUrl?: string | null;
-  imageUrl?: string | null;
+  imageUrls?: string[];
   published?: boolean;
-  technologyIds?: number[];
+  technologyIds?: string[];
 }): Promise<Project> {
   const titleFr = data?.titleFr || "Projet de test";
   const titleEn = data?.titleEn || "Test Project";
@@ -18,7 +18,7 @@ export async function createProject(data?: {
   const descriptionEn = data?.descriptionEn || "This is a test project description";
   const url = data?.url !== undefined ? data.url : "https://example.com";
   const githubUrl = data?.githubUrl !== undefined ? data.githubUrl : "https://github.com/example";
-  const imageUrl = data?.imageUrl !== undefined ? data.imageUrl : "https://example.com/image.jpg";
+  const imageUrls = data?.imageUrls ?? ["https://example.com/image.jpg"];
   const published = data?.published !== undefined ? data.published : true;
 
   const project = await Project.create({
@@ -28,7 +28,7 @@ export async function createProject(data?: {
     descriptionEn,
     url,
     githubUrl,
-    imageUrl,
+    imageUrls,
     published,
   });
 

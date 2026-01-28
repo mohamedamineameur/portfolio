@@ -1,0 +1,124 @@
+
+src/modules/contacts/contact.controller.ts:64:55 - error TS2345: Argument of type 'string' is not assignable to parameter of t
+src/modules/contacts/contact.controller.ts:64:55 - error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+
+64       const contact = await contactService.markAsRead(id);
+                                                         ~~
+
+src/modules/contacts/contact.controller.ts:78:35 - error TS2345: Argument of type 'string' is not assignable to parameter of t
+src/modules/contacts/contact.controller.ts:78:35 - error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+
+78       await contactService.delete(id);
+                                     ~~
+
+src/modules/photos/photo.controller.ts:6:5 - error TS6133: 'req' is declared but its value is never read.
+
+6     req: Request,
+      ~~~
+
+src/modules/profile/profile.service.ts:3:1 - error TS6133: 'HttpError' is declared but its value is never read.
+
+3 import { HttpError } from "../../utils/httpError.js";
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/modules/profile/profile.service.ts:11:15 - error TS2551: Property 'photo' does not exist on type 'Profile'. Did you mean '
+src/modules/profile/profile.service.ts:11:15 - error TS2551: Property 'photo' does not exist on type 'Profile'. Did you mean 'photoId'?
+
+11   if (profile.photo && profile.photo.url) {
+                 ~~~~~
+
+  src/database/models/Profile.model.ts:21:11
+    21   declare photoId: string | null;
+                 ~~~~~~~
+    'photoId' is declared here.
+
+src/modules/profile/profile.service.ts:11:32 - error TS2551: Property 'photo' does not exist on type 'Profile'. Did you mean '
+src/modules/profile/profile.service.ts:11:32 - error TS2551: Property 'photo' does not exist on type 'Profile'. Did you mean 'photoId'?
+
+11   if (profile.photo && profile.photo.url) {
+                                  ~~~~~
+
+  src/database/models/Profile.model.ts:21:11
+    21   declare photoId: string | null;
+                 ~~~~~~~
+    'photoId' is declared here.
+
+src/modules/profile/profile.service.ts:12:53 - error TS2551: Property 'photo' does not exist on type 'Profile'. Did you mean '
+src/modules/profile/profile.service.ts:12:53 - error TS2551: Property 'photo' does not exist on type 'Profile'. Did you mean 'photoId'?
+
+12     const absoluteUrl = getAbsoluteImageUrl(profile.photo.url);
+                                                       ~~~~~
+
+  src/database/models/Profile.model.ts:21:11
+    21   declare photoId: string | null;
+                 ~~~~~~~
+    'photoId' is declared here.
+
+src/modules/profile/profile.service.ts:15:14 - error TS2551: Property 'photo' does not exist on type 'Profile'. Did you mean '
+src/modules/profile/profile.service.ts:15:14 - error TS2551: Property 'photo' does not exist on type 'Profile'. Did you mean 'photoId'?
+
+15     (profile.photo as any).url = absoluteUrl;
+                ~~~~~
+
+  src/database/models/Profile.model.ts:21:11
+    21   declare photoId: string | null;
+                 ~~~~~~~
+    'photoId' is declared here.
+
+src/modules/technologies/technology.controller.ts:70:38 - error TS2345: Argument of type 'string' is not assignable to paramet
+src/modules/technologies/technology.controller.ts:70:38 - error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+
+70       await technologyService.delete(id);
+                                        ~~
+
+tests/projects.test.ts:35:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in ty
+tests/projects.test.ts:35:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string |
+tests/projects.test.ts:35:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string | undefined; url?: string | null | undefined; githubUrl?: string | null | undefined; imageUrls?: string[] | undefined; publishe
+tests/projects.test.ts:35:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string | undefined; url?: string | null | undefined; githubUrl?: string | null | undefined; imageUrls?: string[] | undefined; published?: boolean | undefined; technologyIds?: string[] | undefined; }'. Did you mean to write 'titleFr'?
+
+35         title: "My Portfolio",
+           ~~~~~
+
+tests/projects.test.ts:51:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in ty
+tests/projects.test.ts:51:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string |
+tests/projects.test.ts:51:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string | undefined; url?: string | null | undefined; githubUrl?: string | null | undefined; imageUrls?: string[] | undefined; publishe
+tests/projects.test.ts:51:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string | undefined; url?: string | null | undefined; githubUrl?: string | null | undefined; imageUrls?: string[] | undefined; published?: boolean | undefined; technologyIds?: string[] | undefined; }'. Did you mean to write 'titleFr'?
+
+51         title: "Published Project",
+           ~~~~~
+
+tests/projects.test.ts:56:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in ty
+tests/projects.test.ts:56:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string |
+tests/projects.test.ts:56:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string | undefined; url?: string | null | undefined; githubUrl?: string | null | undefined; imageUrls?: string[] | undefined; publishe
+tests/projects.test.ts:56:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string | undefined; url?: string | null | undefined; githubUrl?: string | null | undefined; imageUrls?: string[] | undefined; published?: boolean | undefined; technologyIds?: string[] | undefined; }'. Did you mean to write 'titleFr'?
+
+56         title: "Draft Project",
+           ~~~~~
+
+tests/projects.test.ts:83:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in ty
+tests/projects.test.ts:83:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string |
+tests/projects.test.ts:83:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string | undefined; url?: string | null | undefined; githubUrl?: string | null | undefined; imageUrls?: string[] | undefined; publishe
+tests/projects.test.ts:83:9 - error TS2561: Object literal may only specify known properties, but 'title' does not exist in type '{ titleFr?: string | undefined; titleEn?: string | undefined; descriptionFr?: string | undefined; descriptionEn?: string | undefined; url?: string | null | undefined; githubUrl?: string | null | undefined; imageUrls?: string[] | undefined; published?: boolean | undefined; technologyIds?: string[] | undefined; }'. Did you mean to write 'titleFr'?
+
+83         title: "Vue App",
+           ~~~~~
+
+
+Found 13 errors in 5 files.
+
+Errors  Files
+     2  src/modules/contacts/contact.controller.ts:64
+     1  src/modules/photos/photo.controller.ts:6
+     5  src/modules/profile/profile.service.ts:3
+     1  src/modules/technologies/technology.controller.ts:70
+     4  tests/projects.test.ts:35
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path /home/amine/Bureau/portfolio/server
+npm error workspace portfolio-server@1.0.0
+npm error location /home/amine/Bureau/portfolio/server
+npm error command failed
+npm error command sh -c tsc ✘ amine@amine-HP-ENVY-Laptop-17-cr1xxx  ~/Bureau/portfolio/server   main ±  > portfolio-server@1.0.0 build
+zsh: command not found: build ✘ amine@amine-HP-ENVY-Laptop-17-cr1xxx  ~/Bureau/portfolio/server   main ±  > portfolio-server@1.0.0 build
+zsh: command not found: build ✘ amine@amine-HP-ENVY-Laptop-17-cr1xxx  ~/Bureau/portfolio/server   main ±  > portfolio-server@1.0.0 build
+zsh: command not found: build ✘ amine@amine-HP-ENVY-Laptop-17-cr1xxx  ~/Bureau/portfolio/server   main ±  > portfolio-server@1.0.0 build

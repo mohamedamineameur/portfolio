@@ -113,6 +113,8 @@ export const translations = {
     "admin.url": "URL",
     "admin.githubUrl": "GitHub URL",
     "admin.imageUrl": "URL de l'image",
+    "admin.images": "Images du projet",
+    "admin.removeImage": "Supprimer l'image",
     "admin.published": "Publié",
     "admin.name": "Nom",
     "admin.icon": "Icône",
@@ -152,6 +154,7 @@ export const translations = {
     "common.error": "Une erreur est survenue",
     "common.retry": "Réessayer",
     "common.notFound": "Page non trouvée",
+    "common.notFoundDescription": "La page que vous recherchez n'existe pas ou a été déplacée.",
     "common.backHome": "Retour à l'accueil",
 
     // Footer
@@ -269,6 +272,8 @@ export const translations = {
     "admin.url": "URL",
     "admin.githubUrl": "GitHub URL",
     "admin.imageUrl": "Image URL",
+    "admin.images": "Project images",
+    "admin.removeImage": "Remove image",
     "admin.published": "Published",
     "admin.name": "Name",
     "admin.icon": "Icon",
@@ -308,6 +313,7 @@ export const translations = {
     "common.error": "An error occurred",
     "common.retry": "Retry",
     "common.notFound": "Page not found",
+    "common.notFoundDescription": "The page you are looking for does not exist or has been moved.",
     "common.backHome": "Back to home",
 
     // Footer

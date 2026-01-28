@@ -173,7 +173,8 @@ frontend/
 
 - Background: #0B0E14
 - Surface: #121826
-- Primary: #6366F1
+- Primary: #
+
 - Accent: #22D3EE
 - Text Primary: #F8FAFC
 - Text Secondary: #94A3B8

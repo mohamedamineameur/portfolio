@@ -57,7 +57,7 @@ export function Admin() {
     descriptionEn: "",
     url: "",
     githubUrl: "",
-    imageUrl: "",
+    imageUrls: [] as string[],
     published: true,
     technologyIds: [] as string[],
   });
@@ -150,7 +150,7 @@ export function Admin() {
         descriptionEn: project.descriptionEn,
         url: project.url || "",
         githubUrl: project.githubUrl || "",
-        imageUrl: project.imageUrl || "",
+        imageUrls: project.imageUrls ?? [],
         published: project.published,
         technologyIds: project.Technologies?.map((t) => t.id) || [],
       });
@@ -163,7 +163,7 @@ export function Admin() {
         descriptionEn: "",
         url: "",
         githubUrl: "",
-        imageUrl: "",
+        imageUrls: [],
         published: true,
         technologyIds: [],
       });
@@ -187,7 +187,7 @@ export function Admin() {
           descriptionEn: projectForm.descriptionEn,
           url: projectForm.url || null,
           githubUrl: projectForm.githubUrl || null,
-          imageUrl: projectForm.imageUrl || null,
+          imageUrls: projectForm.imageUrls,
           published: projectForm.published,
           technologyIds: projectForm.technologyIds,
         });
@@ -200,7 +200,7 @@ export function Admin() {
           descriptionEn: projectForm.descriptionEn,
           url: projectForm.url || null,
           githubUrl: projectForm.githubUrl || null,
-          imageUrl: projectForm.imageUrl || null,
+          imageUrls: projectForm.imageUrls,
           published: projectForm.published,
           technologyIds: projectForm.technologyIds,
         });
@@ -671,23 +671,40 @@ export function Admin() {
             </div>
             <div>
               <label className="block text-sm font-medium text-text-primary mb-2">
-                {t("admin.imageUrl")}
+                {t("admin.images")}
               </label>
-              <div className="flex gap-2">
-                <Input
-                  type="text"
-                  value={projectForm.imageUrl}
-                  onChange={(e) => setProjectForm({ ...projectForm, imageUrl: e.target.value })}
-                  placeholder="/uploads/image.svg"
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsImageSelectorOpen(true)}
-                >
-                  {t("admin.selectImage")}
-                </Button>
+              <div className="flex flex-wrap gap-2 mb-2">
+                {projectForm.imageUrls.map((url, i) => (
+                  <div key={i} className="relative">
+                    <img
+                      src={url}
+                      alt=""
+                      className="w-16 h-16 object-cover rounded-lg border border-surface/50"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setProjectForm({
+                          ...projectForm,
+                          imageUrls: projectForm.imageUrls.filter((_, j) => j !== i),
+                        })
+                      }
+                      className="absolute -top-1 -right-1 min-touch-target w-6 h-6 rounded-full bg-red-500 text-white text-sm flex items-center justify-center hover:bg-red-600 transition-colors"
+                      aria-label={t("admin.removeImage")}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
               </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsImageSelectorOpen(true)}
+              >
+                {t("admin.selectImage")}
+              </Button>
             </div>
             <div>
               <label className="flex items-center gap-2">
@@ -904,8 +921,11 @@ export function Admin() {
         >
           <PhotoSelector
             selectedPhotoId={null}
-            onSelect={(photoId, photoUrl) => {
-              setProjectForm({ ...projectForm, imageUrl: photoUrl });
+            onSelect={(_photoId, photoUrl) => {
+              setProjectForm({
+                ...projectForm,
+                imageUrls: [...projectForm.imageUrls, photoUrl],
+              });
               setIsImageSelectorOpen(false);
             }}
             onCancel={() => setIsImageSelectorOpen(false)}
@@ -921,7 +941,7 @@ export function Admin() {
         >
           <PhotoSelector
             selectedPhotoId={profileForm.photoId}
-            onSelect={(photoId, photoUrl) => {
+            onSelect={(photoId, _photoUrl) => {
               setProfileForm({ ...profileForm, photoId });
               setIsPhotoSelectorOpen(false);
             }}

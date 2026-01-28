@@ -1,16 +1,16 @@
 import { Profile } from "../../database/models/Profile.model.js";
 import { Photo } from "../../database/models/Photo.model.js";
-import { HttpError } from "../../utils/httpError.js";
 import { getAbsoluteImageUrl } from "../../utils/imageUrl.js";
+
+type ProfileWithPhoto = Profile & { photo?: Photo };
 
 /**
  * Transforme l'URL de la photo du profil en URL absolue
  * Modifie l'instance en place et retourne l'instance modifiée
  */
-function transformProfilePhotoUrl(profile: Profile): Profile {
-  if (profile.photo && profile.photo.url) {
+function transformProfilePhotoUrl(profile: ProfileWithPhoto): ProfileWithPhoto {
+  if (profile.photo?.url) {
     const absoluteUrl = getAbsoluteImageUrl(profile.photo.url);
-    // Modifier directement la propriété de l'instance photo
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (profile.photo as any).url = absoluteUrl;
   }

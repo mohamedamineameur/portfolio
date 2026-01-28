@@ -10,6 +10,8 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import type { Project } from "../../types/api";
 import { ExternalLink, Github, ArrowLeft } from "lucide-react";
 import { Button } from "../../components/ui/Button";
+import { Carousel } from "../../components/ui/Carousel";
+import { ImageLightbox } from "../../components/ui/ImageLightbox";
 import { motion } from "framer-motion";
 
 export function ProjectDetails() {
@@ -18,6 +20,7 @@ export function ProjectDetails() {
   const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const { language, t } = useLanguage();
 
   const getProjectTitle = (project: Project) => {
@@ -79,12 +82,22 @@ export function ProjectDetails() {
           </Button>
         </Link>
 
-        {project.imageUrl && (
-          <img
-            src={project.imageUrl}
-            alt={getProjectTitle(project)}
-            className="w-full h-64 md:h-96 object-cover rounded-xl mb-8"
-          />
+        {project.imageUrls?.length > 0 && (
+          <>
+            <Carousel
+              images={project.imageUrls}
+              alt={getProjectTitle(project)}
+              className="w-full h-64 md:h-96 mb-8"
+              imageClassName="rounded-xl"
+              onImageClick={(url) => setLightboxImage(url)}
+            />
+            <ImageLightbox
+              isOpen={!!lightboxImage}
+              imageUrl={lightboxImage}
+              alt={getProjectTitle(project)}
+              onClose={() => setLightboxImage(null)}
+            />
+          </>
         )}
 
         <Card className="mb-6">

@@ -3,7 +3,7 @@ import { photoService } from "./photo.service.js";
 
 export const photoController = {
   findAll: async (
-    req: Request,
+    _req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> => {

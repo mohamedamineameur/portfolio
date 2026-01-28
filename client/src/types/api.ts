@@ -21,7 +21,7 @@ export interface Project {
   descriptionEn: string;
   url: string | null;
   githubUrl: string | null;
-  imageUrl: string | null;
+  imageUrls: string[];
   published: boolean;
   createdAt: string;
   updatedAt: string;

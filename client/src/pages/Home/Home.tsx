@@ -88,12 +88,14 @@ export function Home() {
                   className="h-full flex flex-col"
                   onClick={() => (window.location.href = `/projects/${project.id}`)}
                 >
-                  {project.imageUrl && (
-                    <img
-                      src={project.imageUrl}
-                      alt={getProjectTitle(project)}
-                      className="w-full h-48 object-cover rounded-lg mb-4"
-                    />
+                  {project.imageUrls?.length > 0 && (
+                    <div className="w-full h-48 bg-surface/50 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={project.imageUrls[0]}
+                        alt={getProjectTitle(project)}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                   )}
                   <h3 className="text-xl font-semibold text-text-primary mb-2">
                     {getProjectTitle(project)}

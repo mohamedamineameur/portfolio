@@ -27,3 +27,17 @@ export function getAbsoluteImageUrl(imageUrl: string | null): string | null {
   // Sinon, on ajoute /uploads/ devant
   return `${serverUrl}/uploads/${imageUrl}`;
 }
+
+/**
+ * Transforme un tableau d'URLs d'images en URLs absolues.
+ * @param imageUrls - Tableau d'URLs (relative ou absolue)
+ * @returns Tableau d'URLs absolues (les null/undefined sont exclus)
+ */
+export function getAbsoluteImageUrls(imageUrls: (string | null)[] | null | undefined): string[] {
+  if (!imageUrls || !Array.isArray(imageUrls)) {
+    return [];
+  }
+  return imageUrls
+    .filter((u): u is string => !!u)
+    .map((u) => getAbsoluteImageUrl(u) as string);
+}

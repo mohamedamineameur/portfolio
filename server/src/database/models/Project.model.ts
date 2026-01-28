@@ -18,7 +18,7 @@ export class Project extends Model<
   declare descriptionEn: string;
   declare url: string | null;
   declare githubUrl: string | null;
-  declare imageUrl: string | null;
+  declare imageUrls: string[];
   declare published: boolean;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -91,9 +91,10 @@ Project.init(
         },
       },
     },
-    imageUrl: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    imageUrls: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: [],
     },
     published: {
       type: DataTypes.BOOLEAN,
