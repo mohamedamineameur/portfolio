@@ -4,6 +4,7 @@ Backend server for the portfolio application.
 
 ## Architecture
 
+
 This server follows a production-grade architecture with:
 - Clean separation of concerns (routes → controllers → services → database)
 - Server-side session authentication (no JWT, no localStorage)
