@@ -9,6 +9,7 @@
     "build": "tsc",
     "start": "NODE_ENV=production node dist/src/server.js",
     "migrate": "tsx src/database/migrate.ts",
+    "prodMigrate": "-e \"import('.dist/src/database/sequelize.js').then(async ({sequelize}) => { await import('.dist/src/database/models/index.js'); await sequelize.sync({alter: false}); await sequelize.close(); })\"",
     "migrate:force": "NODE_ENV=development tsx -e \"import('./src/database/sequelize.js').then(async ({sequelize}) => { await import('./src/database/models/index.js'); await sequelize.sync({force: true}); await sequelize.close(); })\"",
     "seed": "NODE_ENV=development tsx src/database/seed.ts",
     "create-admin": "NODE_ENV=development tsx src/scripts/createAdmin.ts",
