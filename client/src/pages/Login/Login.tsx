@@ -1,9 +1,10 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { PageWrapper } from "../../components/layout/PageWrapper";
 import { Card } from "../../components/ui/Card";
 import { Input } from "../../components/ui/Input";
 import { Button } from "../../components/ui/Button";
+import { Loader } from "../../components/ui/Loader";
 import { useAuth } from "../../contexts/AuthContext";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useUI } from "../../contexts/UIContext";
@@ -13,7 +14,20 @@ import { extractErrorMessage } from "../../utils/errorHandler";
 
 export function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { user, isLoading: authChecking, login, checkAuth } = useAuth();
+  const hasChecked = useRef(false);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/admin", { replace: true });
+      return;
+    }
+    if (hasChecked.current) return;
+    hasChecked.current = true;
+    void checkAuth().then((u) => {
+      if (u) navigate("/admin", { replace: true });
+    });
+  }, [user, checkAuth, navigate]);
   const { t } = useLanguage();
   const { setError, setSuccess } = useUI();
   const [email, setEmail] = useState("");
@@ -40,6 +54,14 @@ export function Login() {
       setIsLoading(false);
     }
   };
+
+  if (authChecking) {
+    return (
+      <PageWrapper>
+        <Loader />
+      </PageWrapper>
+    );
+  }
 
   return (
     <PageWrapper>

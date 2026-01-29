@@ -32,4 +32,4 @@ authRoutes.post(
 
 authRoutes.post("/logout", requireAuth, authController.logout);
 
-authRoutes.get("/me", requireAuth, authController.me);
+authRoutes.get("/me", authController.me);

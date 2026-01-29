@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 import { apiClient } from "../config/api.js";
 import type { User } from "../types/api.js";
 
@@ -8,29 +8,29 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
-  checkAuth: () => Promise<void>;
+  checkAuth: () => Promise<User | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const checkAuth = async (): Promise<void> => {
+  const checkAuth = async (): Promise<User | null> => {
+    setIsLoading(true);
     try {
-      const response = await apiClient.get("/api/auth/me");
-      setUser(response.data.user);
+      const response = await apiClient.get<{ user: User | null }>("/api/auth/me");
+      const u = response.data.user ?? null;
+      setUser(u);
+      return u;
     } catch {
       setUser(null);
+      return null;
     } finally {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
     const response = await apiClient.post("/api/auth/login", { email, password });

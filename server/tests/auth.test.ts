@@ -88,8 +88,9 @@ describe("Auth", () => {
       expect(response.body.user).toHaveProperty("email", user.email);
     });
 
-    it("should return 401 when not authenticated", async () => {
-      await request(app).get("/api/auth/me").expect(401);
+    it("should return 200 with user null when not authenticated", async () => {
+      const response = await request(app).get("/api/auth/me").expect(200);
+      expect(response.body).toHaveProperty("user", null);
     });
   });
 });
