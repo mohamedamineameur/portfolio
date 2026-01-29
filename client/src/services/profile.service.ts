@@ -14,6 +14,8 @@ export const profileService = {
     tel?: string | null;
     linkedIn?: string | null;
     github?: string | null;
+    descriptionFr?: string | null;
+    descriptionEn?: string | null;
     photoId?: string | null;
   }): Promise<Profile> {
     const response = await apiClient.put<Profile>("/api/profile", data);

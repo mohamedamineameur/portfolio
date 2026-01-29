@@ -15,7 +15,7 @@ import { Code, Database, Globe, Smartphone, Mail, Phone, Linkedin, Github } from
 export function About() {
   const { profile, isLoading, error } = useProfile();
   const { technologies, isLoading: technologiesLoading, error: technologiesError } = useTechnologies();
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   const skills = [
     { key: "about.skillFrontend", icon: Globe, color: "primary" },
@@ -23,6 +23,12 @@ export function About() {
     { key: "about.skillMobile", icon: Smartphone, color: "primary" },
     { key: "about.skillDevOps", icon: Code, color: "accent" },
   ] as const;
+
+  const profileDescription = profile
+    ? language === "fr"
+      ? profile.descriptionFr
+      : profile.descriptionEn
+    : null;
 
   return (
     <PageWrapper>
@@ -116,23 +122,26 @@ export function About() {
           />
         )}
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <Card>
-            <h2 className="text-2xl font-bold text-text-primary mb-4">
-              {t("about.whoAmI")}
-            </h2>
-            <p className="text-text-secondary leading-relaxed mb-4">
-              {t("about.bio1")}
-            </p>
-            <p className="text-text-secondary leading-relaxed">
-              {t("about.bio2")}
-            </p>
-          </Card>
-        </motion.div>
+        {profile && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <Card>
+              <h2 className="text-2xl font-bold text-text-primary mb-4">
+                {t("about.whoAmI")}
+              </h2>
+              {profileDescription ? (
+                <p className="text-text-secondary leading-relaxed whitespace-pre-line">
+                  {profileDescription}
+                </p>
+              ) : (
+                <p className="text-text-secondary">{t("about.noDescription")}</p>
+              )}
+            </Card>
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

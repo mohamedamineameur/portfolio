@@ -18,6 +18,8 @@ export class Profile extends Model<
   declare tel: string | null;
   declare linkedIn: string | null;
   declare github: string | null;
+  declare descriptionFr: string | null;
+  declare descriptionEn: string | null;
   declare photoId: string | null;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -68,6 +70,14 @@ Profile.init(
       validate: {
         isUrl: true,
       },
+    },
+    descriptionFr: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    descriptionEn: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     photoId: {
       type: DataTypes.UUID,

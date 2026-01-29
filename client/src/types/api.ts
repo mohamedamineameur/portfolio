@@ -53,6 +53,8 @@ export interface Profile {
   tel: string | null;
   linkedIn: string | null;
   github: string | null;
+  descriptionFr: string | null;
+  descriptionEn: string | null;
   photoId: string | null;
   createdAt: string;
   updatedAt: string;

@@ -81,6 +81,10 @@ async function seed(): Promise<void> {
         tel: "+33 6 12 34 56 78",
         linkedIn: "https://linkedin.com/in/jeandupont",
         github: "https://github.com/jeandupont",
+        descriptionFr:
+          "Développeur full stack passionné par la création d'applications web modernes et performantes. Je me spécialise dans les technologies JavaScript/TypeScript et j'aime créer des expériences utilisateur exceptionnelles.\n\nMon objectif est de combiner créativité et expertise technique pour développer des solutions innovantes qui répondent aux besoins réels des utilisateurs.",
+        descriptionEn:
+          "Full stack developer passionate about building modern, performant web applications. I specialize in JavaScript/TypeScript technologies and love creating exceptional user experiences.\n\nMy goal is to combine creativity and technical expertise to develop innovative solutions that meet real user needs.",
         photoId: photo.id,
       });
       logger.info(`Created profile: ${profile.prenom} ${profile.nom}`);

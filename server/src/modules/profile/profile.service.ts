@@ -31,6 +31,8 @@ export const profileService = {
     tel?: string | null;
     linkedIn?: string | null;
     github?: string | null;
+    descriptionFr?: string | null;
+    descriptionEn?: string | null;
     photoId?: string | null;
   }): Promise<Profile> {
     // Check if profile already exists
@@ -57,6 +59,8 @@ export const profileService = {
         tel: data.tel ?? null,
         linkedIn: data.linkedIn ?? null,
         github: data.github ?? null,
+        descriptionFr: data.descriptionFr ?? null,
+        descriptionEn: data.descriptionEn ?? null,
         photoId: data.photoId ?? null,
       });
       const reloadedProfile = await profile.reload({

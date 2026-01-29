@@ -78,6 +78,8 @@ export function Admin() {
     tel: "",
     linkedIn: "",
     github: "",
+    descriptionFr: "",
+    descriptionEn: "",
     photoId: null as string | null,
   });
 
@@ -288,6 +290,8 @@ export function Admin() {
         tel: profile.tel || "",
         linkedIn: profile.linkedIn || "",
         github: profile.github || "",
+        descriptionFr: profile.descriptionFr || "",
+        descriptionEn: profile.descriptionEn || "",
         photoId: profile.photoId,
       });
     }
@@ -308,6 +312,8 @@ export function Admin() {
         tel: profileForm.tel || null,
         linkedIn: profileForm.linkedIn || null,
         github: profileForm.github || null,
+        descriptionFr: profileForm.descriptionFr || null,
+        descriptionEn: profileForm.descriptionEn || null,
         photoId: profileForm.photoId,
       });
       setSuccess(t("admin.profileUpdated"));
@@ -879,6 +885,28 @@ export function Admin() {
                 value={profileForm.github}
                 onChange={(e) => setProfileForm({ ...profileForm, github: e.target.value })}
                 placeholder="https://github.com/..."
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-text-primary mb-2">
+                {t("admin.descriptionFr")}
+              </label>
+              <textarea
+                value={profileForm.descriptionFr}
+                onChange={(e) => setProfileForm({ ...profileForm, descriptionFr: e.target.value })}
+                className="w-full min-h-[100px] px-4 py-2 bg-surface border border-surface/50 rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder={t("admin.descriptionFrPlaceholder")}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-text-primary mb-2">
+                {t("admin.descriptionEn")}
+              </label>
+              <textarea
+                value={profileForm.descriptionEn}
+                onChange={(e) => setProfileForm({ ...profileForm, descriptionEn: e.target.value })}
+                className="w-full min-h-[100px] px-4 py-2 bg-surface border border-surface/50 rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder={t("admin.descriptionEnPlaceholder")}
               />
             </div>
             <div>
