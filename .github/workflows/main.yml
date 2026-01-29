@@ -11,18 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Récupérer le code EXACT du repo (branche main)
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ (Optionnel mais recommandé) Afficher le commit utilisé
+      - name: Print commit SHA
+        run: |
+          echo "Building commit: $GITHUB_SHA"
+          git rev-parse HEAD
+
+      # 3️⃣ Login Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push image
+      # 4️⃣ Build + Push Docker image (CACHE DÉSACTIVÉ)
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: aminefaw89/portfolio:latest
+          no-cache: true
+          tags: |
+            aminefaw89/portfolio:latest
+            aminefaw89/portfolio:${{ github.sha }}
