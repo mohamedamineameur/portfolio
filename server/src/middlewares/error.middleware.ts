@@ -15,13 +15,18 @@ export const errorMiddleware = (
   logger.error("Error:", err);
 
   const statusCode = err.statusCode || 500;
-  const message =
-    env.NODE_ENV === "production"
-      ? "Internal server error"
-      : err.message;
+  const message = err.message;
 
-  res.status(statusCode).json({
+  const payload: { error: string; stack?: string; details?: unknown } = {
     error: message,
-    ...(env.NODE_ENV === "development" && { stack: err.stack }),
-  });
+  };
+  if (env.NODE_ENV === "development" && err.stack) {
+    payload.stack = err.stack;
+  }
+  const errWithDetails = err as Error & { details?: unknown };
+  if (errWithDetails.details !== undefined) {
+    payload.details = errWithDetails.details;
+  }
+
+  res.status(statusCode).json(payload);
 };
