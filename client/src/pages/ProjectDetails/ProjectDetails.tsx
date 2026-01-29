@@ -111,13 +111,13 @@ export function ProjectDetails() {
             )}
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-6">
+          <ul className="flex flex-wrap gap-2 mb-6 list-none p-0 m-0" aria-label="Technologies used">
             {project.Technologies?.map((tech) => (
-              <Badge key={tech.id} variant="primary">
-                {tech.name}
-              </Badge>
+              <li key={tech.id}>
+                <Badge variant="primary">{tech.name}</Badge>
+              </li>
             ))}
-          </div>
+          </ul>
 
           <p className="text-text-secondary text-lg leading-relaxed mb-6 whitespace-pre-line">
             {getProjectDescription(project)}

@@ -104,26 +104,29 @@ export function Home() {
                   <p className="text-text-secondary text-sm mb-4 flex-1 line-clamp-3">
                     {getProjectDescription(project)}
                   </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <ul className="flex flex-wrap gap-2 mb-4 list-none p-0 m-0" aria-label="Technologies used">
                     {project.Technologies?.slice(0, 3).map((tech) => (
-                      <Badge key={tech.id} variant="primary">
-                        {tech.name}
-                      </Badge>
+                      <li key={tech.id}>
+                        <Badge variant="primary">{tech.name}</Badge>
+                      </li>
                     ))}
                     {project.Technologies && project.Technologies.length > 3 && (
-                      <Badge variant="default">
-                        +{project.Technologies.length - 3}
-                      </Badge>
+                      <li>
+                        <Badge variant="default">
+                          +{project.Technologies.length - 3}
+                        </Badge>
+                      </li>
                     )}
-                  </div>
+                  </ul>
                   <div className="flex gap-2">
                     {project.url && (
                       <a
                         href={project.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="min-touch-target text-primary hover:text-accent"
+                        className="min-touch-target text-primary hover:text-accent inline-flex items-center justify-center"
                         onClick={(e) => e.stopPropagation()}
+                        aria-label="Open project"
                       >
                         <ExternalLink size={20} />
                       </a>
@@ -133,8 +136,9 @@ export function Home() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="min-touch-target text-primary hover:text-accent"
+                        className="min-touch-target text-primary hover:text-accent inline-flex items-center justify-center"
                         onClick={(e) => e.stopPropagation()}
+                        aria-label="View on GitHub"
                       >
                         <Github size={20} />
                       </a>

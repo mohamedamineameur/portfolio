@@ -174,7 +174,7 @@ export function About() {
             <h2 className="text-2xl font-bold text-text-primary mb-4">
               {t("about.technologies")}
             </h2>
-            <div className="flex flex-wrap gap-2">
+            <ul className="flex flex-wrap gap-2 list-none p-0 m-0" aria-label="Technologies and tools">
               {[
                 "React",
                 "TypeScript",
@@ -185,11 +185,11 @@ export function About() {
                 "Tailwind CSS",
                 "Docker",
               ].map((tech) => (
-                <Badge key={tech} variant="primary">
-                  {tech}
-                </Badge>
+                <li key={tech}>
+                  <Badge variant="primary">{tech}</Badge>
+                </li>
               ))}
-            </div>
+            </ul>
           </Card>
         </motion.div>
       </div>
