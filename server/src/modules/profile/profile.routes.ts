@@ -1,7 +1,7 @@
 import { Router, type Request, type Response, type NextFunction } from "express";
 import { profileController } from "./profile.controller.js";
-import { validate } from "../../middlewares/validate.middleware.js";
-import { updateProfileSchema } from "./profile.schema.js";
+//import { validate } from "../../middlewares/validate.middleware.js";
+//import { updateProfileSchema } from "./profile.schema.js";
 import { requireAuth } from "../../middlewares/auth.middleware.js";
 import { apiLimiter } from "../../middlewares/rateLimit.middleware.js";
 
