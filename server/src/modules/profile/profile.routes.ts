@@ -20,9 +20,9 @@ const asyncHandler = (
 profileRoutes.get("/", apiLimiter, asyncHandler(profileController.findOne));
 
 // PUT /api/profile - Update the profile (requires auth)
+// Validation désactivée : validate(updateProfileSchema)
 profileRoutes.put(
   "/",
   requireAuth,
-  validate(updateProfileSchema),
   asyncHandler(profileController.update)
 );
