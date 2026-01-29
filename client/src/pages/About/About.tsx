@@ -6,6 +6,7 @@ import { Loader } from "../../components/ui/Loader";
 import { ErrorState } from "../../components/common/ErrorState";
 import { EmptyState } from "../../components/common/EmptyState";
 import { useProfile } from "../../hooks/useProfile";
+import { useTechnologies } from "../../hooks/useTechnologies";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { getImageUrl } from "../../utils/imageUrl";
 import { motion } from "framer-motion";
@@ -13,6 +14,7 @@ import { Code, Database, Globe, Smartphone, Mail, Phone, Linkedin, Github } from
 
 export function About() {
   const { profile, isLoading, error } = useProfile();
+  const { technologies, isLoading: technologiesLoading, error: technologiesError } = useTechnologies();
   const { t } = useLanguage();
 
   const skills = [
@@ -174,22 +176,22 @@ export function About() {
             <h2 className="text-2xl font-bold text-text-primary mb-4">
               {t("about.technologies")}
             </h2>
-            <ul className="flex flex-wrap gap-2 list-none p-0 m-0" aria-label="Technologies and tools">
-              {[
-                "React",
-                "TypeScript",
-                "Node.js",
-                "Express",
-                "PostgreSQL",
-                "MongoDB",
-                "Tailwind CSS",
-                "Docker",
-              ].map((tech) => (
-                <li key={tech}>
-                  <Badge variant="primary">{tech}</Badge>
-                </li>
-              ))}
-            </ul>
+            {technologiesLoading && <Loader />}
+            {technologiesError && (
+              <ErrorState message={technologiesError} />
+            )}
+            {!technologiesLoading && !technologiesError && technologies.length > 0 && (
+              <ul className="flex flex-wrap gap-2 list-none p-0 m-0" aria-label="Technologies and tools">
+                {technologies.map((tech) => (
+                  <li key={tech.id}>
+                    <Badge variant="primary">{tech.name}</Badge>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {!technologiesLoading && !technologiesError && technologies.length === 0 && (
+              <p className="text-text-secondary">{t("about.noTechnologies")}</p>
+            )}
           </Card>
         </motion.div>
       </div>
