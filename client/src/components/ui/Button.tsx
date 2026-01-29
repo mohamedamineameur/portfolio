@@ -16,7 +16,7 @@ export function Button({
   as = "button",
   ...props
 }: ButtonProps) {
-  const baseStyles = "min-touch-target font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background";
+  const baseStyles = "min-touch-target font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background inline-flex items-center justify-center gap-2";
   
   const variants = {
     primary: "bg-primary text-white hover:bg-primary/90",

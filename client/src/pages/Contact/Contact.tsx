@@ -134,7 +134,7 @@ export function Contact() {
                     t("contact.sending")
                   ) : (
                     <>
-                      <Send size={20} className="mr-2" />
+                      <Send size={20} className="shrink-0" />
                       {t("contact.send")}
                     </>
                   )}
