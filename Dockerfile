@@ -18,6 +18,10 @@ FROM base AS server-build
 COPY --from=deps /app/node_modules ./node_modules
 COPY server ./server
 WORKDIR /app/server
+
+# 🔥 FORCE clean build
+RUN rm -rf dist
+
 RUN npm install && npm run build
 
 # =========================
