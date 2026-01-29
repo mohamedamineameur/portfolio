@@ -63,7 +63,7 @@ export function Home() {
       </section>
 
       <section>
-        <SectionTitle subtitle={t("home.recentProjects")}>
+        <SectionTitle subtitle={''}>
           {t("home.recentProjects")}
         </SectionTitle>
 
