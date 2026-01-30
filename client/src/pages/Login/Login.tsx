@@ -25,7 +25,9 @@ export function Login() {
     if (hasChecked.current) return;
     hasChecked.current = true;
     void checkAuth().then((u) => {
-      if (u) navigate("/admin", { replace: true });
+      if (u != null) {
+        navigate("/admin", { replace: true });
+      }
     });
   }, [user, checkAuth, navigate]);
   const { t } = useLanguage();
