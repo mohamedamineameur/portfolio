@@ -63,7 +63,7 @@ export const authController = {
 
   me: (req: Request, res: Response): void => {
     if (!req.user) {
-      res.status(200).json({ user: null });
+      res.status(401).json({ error: "Unauthorized" });
       return;
     }
     res.json({
