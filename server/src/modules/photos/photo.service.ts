@@ -1,8 +1,8 @@
 import { Photo } from "../../database/models/Photo.model.js";
+import { deleteFromGcs } from "../../services/gcs.service.js";
 
 /**
- * Les URLs des photos sont stockées et renvoyées en relatif (/uploads/...).
- * Le frontend ajoute la base URL (API) pour charger les images.
+ * Les URLs des photos sont stockées en URL complète GCS.
  */
 export const photoService = {
   findAll: async (): Promise<Photo[]> => {
@@ -24,6 +24,9 @@ export const photoService = {
     if (!photo) {
       throw new Error("Photo not found");
     }
+    // Delete from GCS
+    await deleteFromGcs(photo.url);
+    // Delete from database
     await photo.destroy();
   },
 };

@@ -3,17 +3,8 @@ import path from "path";
 import { env } from "../config/env.js";
 import { Request } from "express";
 
-const storage = multer.diskStorage({
-  destination: (_req: Request, _file: Express.Multer.File, cb) => {
-    cb(null, env.UPLOAD_DIR);
-  },
-  filename: (_req: Request, file: Express.Multer.File, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const ext = path.extname(file.originalname);
-    const name = path.basename(file.originalname, ext);
-    cb(null, `${name}-${uniqueSuffix}${ext}`);
-  },
-});
+// Use memory storage for GCS uploads (file is stored in buffer)
+const storage = multer.memoryStorage();
 
 const fileFilter = (
   _req: Request,
@@ -40,3 +31,13 @@ export const upload = multer({
   },
   fileFilter,
 });
+
+/**
+ * Generate a unique filename for uploads
+ */
+export function generateFilename(originalname: string): string {
+  const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+  const ext = path.extname(originalname);
+  const name = path.basename(originalname, ext);
+  return `${name}-${uniqueSuffix}${ext}`;
+}

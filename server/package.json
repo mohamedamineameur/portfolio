@@ -13,6 +13,9 @@
     "migrate:force": "NODE_ENV=development tsx -e \"import('./src/database/sequelize.js').then(async ({sequelize}) => { await import('./src/database/models/index.js'); await sequelize.sync({force: true}); await sequelize.close(); })\"",
     "seed": "NODE_ENV=development tsx src/database/seed.ts",
     "create-admin": "NODE_ENV=development tsx src/scripts/createAdmin.ts",
+    "create-profile": "tsx src/scripts/create-profile.ts",
+    "create-technologies": "tsx src/scripts/create-technologies.ts",
+    "create-projects": "tsx src/scripts/create-projects.ts",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
     "test:coverage": "NODE_ENV=test jest --coverage"
@@ -21,6 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^7.7.0",
     "bcrypt": "^6.0.0",
     "connect-session-sequelize": "^8.0.2",
     "cors": "^2.8.5",
@@ -33,7 +37,8 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "sequelize": "^6.35.0",
-    "sqlite3": "^5.0.2",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {

@@ -42,8 +42,7 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Serve static files from uploads directory
-app.use("/uploads", express.static("uploads"));
+// Images are served directly from GCS (no local uploads)
 
 // Rate limiting
 app.use("/api", apiLimiter);

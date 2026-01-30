@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { photoService } from "./photo.service.js";
+import { uploadToGcs, isGcsConfigured } from "../../services/gcs.service.js";
+import { generateFilename } from "../../middlewares/upload.middleware.js";
 
 export const photoController = {
   findAll: async (
@@ -44,10 +46,21 @@ export const photoController = {
         return;
       }
 
-      // Le fichier est déjà sauvegardé par multer
-      // On crée juste l'entrée dans la base de données
-      const relativePath = `/uploads/${req.file.filename}`;
-      const photo = await photoService.create(relativePath);
+      if (!isGcsConfigured()) {
+        res.status(500).json({ error: "Storage not configured. Set GCS_BUCKET_NAME and GCS_PROJECT_ID." });
+        return;
+      }
+
+      // Generate unique filename and upload to GCS
+      const filename = generateFilename(req.file.originalname);
+      const publicUrl = await uploadToGcs(
+        req.file.buffer,
+        filename,
+        req.file.mimetype
+      );
+
+      // Save the public URL in database
+      const photo = await photoService.create(publicUrl);
       res.status(201).json(photo);
     } catch (error) {
       next(error);
