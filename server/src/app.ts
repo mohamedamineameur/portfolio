@@ -29,6 +29,11 @@ if (!existsSync(clientDistPath)) {
 
 export const app = express();
 
+// Trust proxy (required in production behind nginx/Cloudflare so req.secure and cookies work)
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
 // Middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
