@@ -13,11 +13,12 @@ import { projectService } from "../../services/project.service";
 import { contactService } from "../../services/contact.service";
 import { technologyService } from "../../services/technology.service";
 import { profileService } from "../../services/profile.service";
+import { visitService } from "../../services/visit.service";
 import { useProfile } from "../../hooks/useProfile";
 import { PhotoSelector } from "../../components/admin/PhotoSelector";
 import { useLanguage } from "../../contexts/LanguageContext";
-import type { Project, Contact, Technology } from "../../types/api";
-import { Trash2, Eye, Plus, Edit } from "lucide-react";
+import type { Project, Contact, Technology, Visit, VisitStats } from "../../types/api";
+import { Trash2, Eye, Plus, Edit, Globe, MapPin } from "lucide-react";
 import { useUI } from "../../contexts/UIContext";
 import { extractErrorMessage } from "../../utils/errorHandler";
 import { getImageUrl } from "../../utils/imageUrl";
@@ -33,10 +34,15 @@ export function Admin() {
   const getProjectDescription = (project: Project) => {
     return language === "fr" ? project.descriptionFr : project.descriptionEn;
   };
-  const [activeTab, setActiveTab] = useState<"projects" | "contacts" | "technologies" | "profile">("projects");
+  const [activeTab, setActiveTab] = useState<"projects" | "contacts" | "technologies" | "profile" | "visits">("projects");
   const [projects, setProjects] = useState<Project[]>([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [technologies, setTechnologies] = useState<Technology[]>([]);
+  const [visits, setVisits] = useState<Visit[]>([]);
+  const [totalVisits, setTotalVisits] = useState(0);
+  const [visitStats, setVisitStats] = useState<VisitStats | null>(null);
+  const [visitsLoading, setVisitsLoading] = useState(false);
+  const [visitFilters, setVisitFilters] = useState({ country: "", city: "", from: "", to: "" });
   const { profile, refetch: refetchProfile } = useProfile();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setErrorState] = useState<string | null>(null);
@@ -106,6 +112,37 @@ export function Admin() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const fetchVisits = async () => {
+    setVisitsLoading(true);
+    try {
+      const [listRes, statsRes] = await Promise.all([
+        visitService.findAll({
+          country: visitFilters.country || undefined,
+          city: visitFilters.city || undefined,
+          from: visitFilters.from ? `${visitFilters.from}T00:00:00.000Z` : undefined,
+          to: visitFilters.to ? `${visitFilters.to}T23:59:59.999Z` : undefined,
+          limit: 100,
+          offset: 0,
+        }),
+        visitService.getStats(),
+      ]);
+      setVisits(listRes.visits);
+      setTotalVisits(listRes.total);
+      setVisitStats(statsRes);
+    } catch (err) {
+      const msg = extractErrorMessage(err);
+      setErrorState(msg || t("admin.loadError"));
+    } finally {
+      setVisitsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "visits") {
+      void fetchVisits();
+    }
+  }, [activeTab]);
 
   const handleDeleteProject = async (id: string) => {
     if (!confirm(t("admin.deleteConfirm"))) return;
@@ -360,6 +397,13 @@ export function Admin() {
           >
             {t("admin.profile")}
           </Button>
+          <Button
+            variant={activeTab === "visits" ? "primary" : "outline"}
+            size="sm"
+            onClick={() => setActiveTab("visits")}
+          >
+            {t("admin.visits")}
+          </Button>
         </div>
 
         {isLoading && <Loader />}
@@ -528,6 +572,126 @@ export function Admin() {
                       </Card>
                     ))}
                   </div>
+                )}
+              </div>
+            )}
+
+            {/* Visits Tab */}
+            {activeTab === "visits" && (
+              <div className="space-y-4">
+                {visitStats && (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card>
+                      <div className="flex items-center gap-2">
+                        <Globe size={24} className="text-primary" />
+                        <div>
+                          <p className="text-text-secondary text-sm">{t("admin.totalVisits")}</p>
+                          <p className="text-2xl font-bold text-text-primary">{visitStats.total}</p>
+                        </div>
+                      </div>
+                    </Card>
+                    <Card>
+                      <div className="flex items-center gap-2">
+                        <MapPin size={24} className="text-primary" />
+                        <div>
+                          <p className="text-text-secondary text-sm">{t("admin.uniqueCountries")}</p>
+                          <p className="text-2xl font-bold text-text-primary">{visitStats.uniqueCountries}</p>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                )}
+                <Card>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                    <Input
+                      label={t("admin.filterByCountry")}
+                      value={visitFilters.country}
+                      onChange={(e) => setVisitFilters((f) => ({ ...f, country: e.target.value }))}
+                      placeholder="CA, US..."
+                    />
+                    <Input
+                      label={t("admin.filterByCity")}
+                      value={visitFilters.city}
+                      onChange={(e) => setVisitFilters((f) => ({ ...f, city: e.target.value }))}
+                      placeholder="Montreal, Paris..."
+                    />
+                    <Input
+                      type="date"
+                      label={t("admin.fromDate")}
+                      value={visitFilters.from}
+                      onChange={(e) => setVisitFilters((f) => ({ ...f, from: e.target.value }))}
+                    />
+                    <Input
+                      type="date"
+                      label={t("admin.toDate")}
+                      value={visitFilters.to}
+                      onChange={(e) => setVisitFilters((f) => ({ ...f, to: e.target.value }))}
+                    />
+                    <Button variant="primary" size="sm" onClick={() => void fetchVisits()}>
+                      {t("admin.applyFilters")}
+                    </Button>
+                  </div>
+                </Card>
+                {visitsLoading && <Loader />}
+                {!visitsLoading && visits.length === 0 && (
+                  <Card>
+                    <p className="text-text-secondary text-center py-8">{t("admin.noVisits")}</p>
+                  </Card>
+                )}
+                {!visitsLoading && visits.length > 0 && (
+                  <>
+                    <Card>
+                      <h3 className="text-lg font-semibold text-text-primary mb-4">{t("admin.visitsByCountry")}</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {visitStats?.countries.map(({ country, count }) => (
+                          <Badge key={country} variant="primary">
+                            {country}: {count}
+                          </Badge>
+                        ))}
+                      </div>
+                    </Card>
+                    <Card>
+                      <h3 className="text-lg font-semibold text-text-primary mb-4">{t("admin.visitsByCity")}</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {visitStats?.cities.slice(0, 20).map(({ city, country, count }) => (
+                          <Badge key={`${city}-${country}`} variant="default">
+                            {city} ({country}): {count}
+                          </Badge>
+                        ))}
+                      </div>
+                    </Card>
+                    <Card>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm text-left">
+                          <thead>
+                            <tr className="border-b border-surface">
+                              <th className="py-2 pr-4 text-text-secondary font-medium">{t("admin.date")}</th>
+                              <th className="py-2 pr-4 text-text-secondary font-medium">{t("admin.ip")}</th>
+                              <th className="py-2 pr-4 text-text-secondary font-medium">{t("admin.country")}</th>
+                              <th className="py-2 pr-4 text-text-secondary font-medium">{t("admin.city")}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {visits.map((v) => (
+                              <tr key={v.id} className="border-b border-surface/50">
+                                <td className="py-2 pr-4 text-text-primary">
+                                  {new Date(v.createdAt).toLocaleString()}
+                                </td>
+                                <td className="py-2 pr-4 text-text-primary font-mono text-xs">{v.ip ?? "—"}</td>
+                                <td className="py-2 pr-4 text-text-primary">{v.country ?? "—"}</td>
+                                <td className="py-2 pr-4 text-text-primary">{v.city ?? "—"}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      {totalVisits > visits.length && (
+                        <p className="text-text-secondary text-sm mt-2">
+                          {visits.length} / {totalVisits}
+                        </p>
+                      )}
+                    </Card>
+                  </>
                 )}
               </div>
             )}

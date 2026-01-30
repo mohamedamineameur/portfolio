@@ -66,6 +66,23 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface Visit {
+  id: string;
+  visitorId: string;
+  ip: string | null;
+  country: string | null;
+  city: string | null;
+  userAgent: string | null;
+  createdAt: string;
+}
+
+export interface VisitStats {
+  total: number;
+  uniqueCountries: number;
+  countries: { country: string; count: number }[];
+  cities: { city: string; country: string; count: number }[];
+}
+
 export interface ApiError {
   error: string;
   details?: unknown;

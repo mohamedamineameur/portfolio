@@ -1,4 +1,5 @@
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
+import { useVisitTracking } from "../hooks/useVisitTracking";
 import { Home } from "../pages/Home/Home";
 import { Projects } from "../pages/Projects/Projects";
 import { ProjectDetails } from "../pages/ProjectDetails/ProjectDetails";
@@ -9,6 +10,7 @@ import { Login } from "../pages/Login/Login";
 import { Error404 } from "../pages/Error404/Error404";
 
 export function Routes() {
+  useVisitTracking();
   return (
     <ReactRouterRoutes>
       <Route path="/" element={<Home />} />
