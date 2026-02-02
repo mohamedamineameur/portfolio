@@ -2,13 +2,15 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import { existsSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import { sessionMiddleware } from "./config/session.js";
 import passport from "./config/passport.js";
 import { corsOptions } from "./config/cors.js";
 import { routes } from "./routes.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
 import { apiLimiter } from "./middlewares/rateLimit.middleware.js";
+import { profileService } from "./modules/profile/profile.service.js";
+import { env } from "./config/env.js";
 
 // Get current file directory (works in both dev and production)
 const __filename = fileURLToPath(import.meta.url);
@@ -67,9 +69,38 @@ app.use((req, res, next) => {
   next();
 });
 
-// SPA fallback: serve index.html for all non-API routes
-app.get("*", (_req, res) => {
-  res.sendFile(path.join(clientDistPath, "index.html"));
+// SPA fallback: serve index.html with profile photo in og:image / twitter:image for crawlers
+app.get("*", async (_req, res) => {
+  const indexPath = path.join(clientDistPath, "index.html");
+  if (!existsSync(indexPath)) {
+    res.status(404).send("Not found");
+    return;
+  }
+  let html = readFileSync(indexPath, "utf-8");
+
+  try {
+    const profile = await profileService.findOne();
+    const photoUrl = (profile as { photo?: { url?: string } })?.photo?.url;
+    if (photoUrl) {
+      const absoluteImageUrl =
+        photoUrl.startsWith("http://") || photoUrl.startsWith("https://")
+          ? photoUrl
+          : `${env.SERVER_URL.replace(/\/$/, "")}${photoUrl.startsWith("/") ? photoUrl : `/${photoUrl}`}`;
+
+      html = html.replace(
+        /<meta\s+property="og:image"\s+content="[^"]*"/,
+        `<meta property="og:image" content="${absoluteImageUrl}"`
+      );
+      html = html.replace(
+        /<meta\s+name="twitter:image"\s+content="[^"]*"/,
+        `<meta name="twitter:image" content="${absoluteImageUrl}"`
+      );
+    }
+  } catch {
+    // Keep default icon if profile fetch fails
+  }
+
+  res.type("html").send(html);
 });
 
 // Error handling (must be last)
