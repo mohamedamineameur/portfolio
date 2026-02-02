@@ -57,8 +57,8 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
-// Serve static files from frontend build
-app.use(express.static(clientDistPath));
+// Serve static files from frontend build (index: false so GET "/" hits the handler below for og:image injection)
+app.use(express.static(clientDistPath, { index: false }));
 
 // 404 handler for API routes
 app.use((req, res, next) => {
