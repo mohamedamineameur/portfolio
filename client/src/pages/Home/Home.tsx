@@ -306,7 +306,7 @@ export function Home() {
               initial="hidden"
               animate={projectsInView ? "visible" : "hidden"}
             >
-              {projects.slice(0, 6).map((project, index) => (
+              {projects.slice(0, 6).map((project) => (
                 <motion.div
                   key={project.id}
                   variants={staggerItem}
