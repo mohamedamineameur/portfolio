@@ -31,6 +31,16 @@ export const translations = {
     "home.subtitle": "Passionné par le développement web moderne et les technologies innovantes",
     "home.recentProjects": "Projets récents",
     "home.viewAllProjects": "Voir tous les projets",
+    "home.aboutPreview": "Développeur full stack, je conçois des applications web modernes et des expériences utilisateur soignées.",
+    "home.discoverMe": "Découvrir mon profil",
+    "home.ctaTitle": "Travaillons ensemble",
+    "home.ctaDescription": "Un projet en tête ? Discutons de vos idées et construisons quelque chose d'exceptionnel.",
+    "home.getInTouch": "Me contacter",
+    "home.projectsCount": "Projets réalisés",
+    "home.technologies": "Technologies",
+    "home.workspaceLabel": "Espace de travail",
+    "home.workspaceTitle": "Mon environnement de travail",
+    "home.workspaceSubtitle": "Un espace dédié au code, à la création et à la concentration.",
 
     // Projects
     "projects.title": "Mes Projets",
@@ -209,6 +219,16 @@ export const translations = {
     "home.subtitle": "Passionate about modern web development and innovative technologies",
     "home.recentProjects": "Recent Projects",
     "home.viewAllProjects": "View all projects",
+    "home.aboutPreview": "Full stack developer crafting modern web applications and polished user experiences.",
+    "home.discoverMe": "Discover my profile",
+    "home.ctaTitle": "Let's work together",
+    "home.ctaDescription": "Have a project in mind? Let's discuss your ideas and build something exceptional.",
+    "home.getInTouch": "Get in touch",
+    "home.projectsCount": "Projects completed",
+    "home.technologies": "Technologies",
+    "home.workspaceLabel": "Workspace",
+    "home.workspaceTitle": "My workspace",
+    "home.workspaceSubtitle": "A space dedicated to code, creation and focus.",
 
     // Projects
     "projects.title": "My Projects",
