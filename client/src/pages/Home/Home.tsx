@@ -226,7 +226,7 @@ export function Home() {
               </motion.div>
               <motion.div variants={staggerItem}>
                 <Link
-                  to="/about"
+                  to="/about.html"
                   className="min-touch-target inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                 >
                   {t("home.discoverMe")}

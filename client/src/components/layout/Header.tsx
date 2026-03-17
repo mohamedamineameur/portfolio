@@ -16,11 +16,14 @@ export function Header() {
   const navItems = [
     { path: "/", label: t("home") },
     { path: "/projects", label: t("projects") },
-    { path: "/about", label: t("about") },
+    { path: "/about.html", label: t("about") },
     { path: "/contact", label: t("contact") },
   ];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) =>
+    path === "/about.html"
+      ? location.pathname === "/about" || location.pathname === "/about.html"
+      : location.pathname === path;
 
   const handleLogout = async () => {
     try {
