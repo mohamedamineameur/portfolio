@@ -10,6 +10,35 @@ function getClientIp(req: Request<unknown, unknown, RecordVisitBody>): string {
   return req.socket?.remoteAddress || "";
 }
 
+function isRealBrowser(req: Request<unknown, unknown, unknown, unknown>): boolean {
+  const ua = req.headers["user-agent"];
+  const accept = req.headers["accept"];
+  const lang = req.headers["accept-language"];
+  const secFetchSite = req.headers["sec-fetch-site"];
+  const secFetchMode = req.headers["sec-fetch-mode"];
+  const secFetchDest = req.headers["sec-fetch-dest"];
+  const secChUa = req.headers["sec-ch-ua"];
+
+  // 1. User-Agent valide
+  if (typeof ua !== "string" || !ua.includes("Mozilla")) return false;
+
+  // 2. Doit accepter du HTML (navigateur)
+  if (typeof accept !== "string" || !accept.includes("text/html")) return false;
+
+  // 3. Langue présente (humain)
+  if (typeof lang !== "string" || lang.trim().length === 0) return false;
+
+  // 4. Headers modernes navigateur
+  if (typeof secFetchSite !== "string") return false;
+  if (typeof secFetchMode !== "string") return false;
+  if (typeof secFetchDest !== "string") return false;
+
+  // 5. Client hints (Chrome/Edge)
+  if (typeof secChUa !== "string") return false;
+
+  return true;
+}
+
 export const visitController = {
   record: async (
     req: Request<unknown, unknown, RecordVisitBody>,
@@ -17,6 +46,11 @@ export const visitController = {
     next: NextFunction
   ): Promise<void> => {
     try {
+      if (!isRealBrowser(req)) {
+        res.status(200).json({ recorded: false, message: "Not a real browser" });
+        return;
+      }
+
       const { visitorId } = req.body;
       const ip = getClientIp(req);
       const userAgent = req.headers["user-agent"] || null;
@@ -40,7 +74,7 @@ export const visitController = {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const filters = listVisitsQuerySchema.parse(req.query) as ListVisitsQuery;
+      const filters: ListVisitsQuery = listVisitsQuerySchema.parse(req.query);
       const { visits, total } = await visitService.findAll(filters);
 
       res.json({
